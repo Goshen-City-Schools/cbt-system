@@ -1,3 +1,14 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+main {
+  min-height: calc(100vh);
+  height: 100%;
+  position: relative;
+  bottom: 0;
+  left: 0;
+  /* width: calc(100vw - 260px); */
+  overflow-x: hidden;
+  background-color: #f1f3f9;
+}
