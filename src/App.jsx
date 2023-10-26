@@ -1,7 +1,6 @@
-import { Text } from "@chakra-ui/react";
+import { RouterProvider } from "react-router-dom";
+import router from "./router";
 
-function App() {
-  return <Text as="h1">Home</Text>;
+export default function App() {
+  return <RouterProvider router={router} />;
 }
-
-export default App;
