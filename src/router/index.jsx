@@ -5,6 +5,9 @@ import {
 } from "react-router-dom";
 import GeneralNotFound from "../pages/NotFound";
 
+// Auth Pages
+import LoginPage from "../pages/auth/Login";
+
 // User pages
 import HomePage from "../pages/Home";
 
@@ -13,7 +16,7 @@ import HomePage from "../pages/Home";
 const router = createBrowserRouter(
   createRoutesFromElements(
     <Route>
-      {/* <Route path="/auth" element={<LoginScreen />} /> */}
+      <Route path="/auth" element={<LoginPage />} />
       <Route path="/" element={<HomePage />} />
 
       <Route path="*" element={<GeneralNotFound />} />

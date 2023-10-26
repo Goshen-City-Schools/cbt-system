@@ -1,5 +1,4 @@
 import { useDispatch, useSelector } from "react-redux";
-import { updateField, setLoginError } from "../app/redux/slices/formSlice";
 
 import { motion } from "framer-motion";
 
@@ -17,10 +16,10 @@ import {
 } from "@chakra-ui/react";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import determineUserType from "../helpers/determinUserType";
-import LoadingScreen from "./Loading.screen";
-import defaultConfigValues from "../data/defaultConfigValues";
-// import { pageVariants } from "../components/PageWrapper";
+import determineUserType from "../../helpers/determinUserType";
+import defaultConfigValues from "../../data/defaultConfigValues";
+import { updateField, setLoginError } from "../../redux/slices/formSlice";
+import LoadingScreen from "../../screens/Loading.screen";
 
 export default function LoginPage() {
   const dispatch = useDispatch();
@@ -119,7 +118,7 @@ export default function LoginPage() {
               overflow={"hidden"}
             >
               <img
-                src="/Goshen-logo-trans.png"
+                src="/images/Goshen-logo-trans.png"
                 alt="Goshen group of Schools logo"
                 className="absolute object-contain w-full h-full"
               />
@@ -140,7 +139,7 @@ export default function LoginPage() {
             overflow={"hidden"}
           >
             <img
-              src="/Illustration.png"
+              src="/images/Illustration.png"
               alt=""
               className="absolute top-0 h-full w-full object-contain"
             />
@@ -175,17 +174,14 @@ export default function LoginPage() {
           <Flex
             direction={"column"}
             alignItems={{ "base": "center", "md": "start" }}
-            marginBottom={12}
+            marginBottom={8}
           >
             <Text
               as={"h3"}
               fontSize={{ "base": "2xl", "md": "4xl" }}
               fontWeight={"bold"}
             >
-              Welcome back
-            </Text>
-            <Text as={"small"} fontSize={"md"}>
-              Fill in your details below to login
+              Login to CBT Portal
             </Text>
           </Flex>
 
