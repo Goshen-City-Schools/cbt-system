@@ -25,7 +25,7 @@ export default function NavItemComponent({ link, children, submenu, click }) {
     >
       <NavLink
         to={link}
-        className="flex w-full h-full pl-4 py-3 gap-4 justify-start font-bold items-center"
+        className="flex w-full h-full pl-4 py-3 gap-3 justify-start font-bold items-center"
       >
         {children}
       </NavLink>

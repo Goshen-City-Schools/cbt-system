@@ -24,7 +24,7 @@ export default function UserSideBar() {
   return (
     <Box
       bg={"brand.900"}
-      width={{ "base": isSideMenuOpen ? "260px" : "0px", "md": "260px" }}
+      width={{ "base": isSideMenuOpen ? "240px" : "0px", "md": "240px" }}
       position={"fixed"}
       top={0}
       fontSize={"sm"}
@@ -57,8 +57,8 @@ export default function UserSideBar() {
 
       <Flex direction={"column"} alignItems={"center"} gap={4}>
         <Box
-          width={"180px"}
-          height={"180px"}
+          width={"160px"}
+          height={"160px"}
           rounded={"full"}
           border={"1px solid"}
           mt={4}
@@ -104,7 +104,7 @@ export default function UserSideBar() {
             <div className="icon h-6 w-6 flex items-center justify-center">
               <MdOutlineAssignment size={18} />
             </div>
-            Assessment Tests
+            Continous Assessment
           </NavItemComponent>
           <NavItemComponent link={"/view-scores"}>
             <div className="icon h-6 w-6 flex items-center justify-center">

@@ -17,6 +17,7 @@ import HomePage from "../pages/user/Home";
 import MyExamsPage from "../pages/user/MyExams";
 import ViewScoresPage from "../pages/user/ViewScores";
 import MyAssessmentTestPage from "../pages/user/assessments";
+import MoodlePage from "../screens/Moodle";
 
 // Admin Pages
 
@@ -27,7 +28,10 @@ const router = createBrowserRouter(
       <Route element={<UserLayout />}>
         <Route index element={<HomePage />} />
         <Route path="/exams" element={<MyExamsPage />} />
-        <Route path="/assessments" element={<MyAssessmentTestPage />} />
+        <Route path="/assessments">
+          <Route index element={<MyAssessmentTestPage />} />
+          <Route path=":assessmentID" element={<MoodlePage />} />
+        </Route>
         <Route path="/view-scores" element={<ViewScoresPage />} />
       </Route>
 
