@@ -10,6 +10,7 @@ import { AnimatePresence } from "framer-motion";
 
 import defaultConfigValues from "./data/defaultConfigValues.js";
 import store from "./redux/store.js";
+import { CBTProvider } from "./contexts/CBTContext.jsx";
 
 const colors = defaultConfigValues.colors;
 const fonts = defaultConfigValues.fonts;
@@ -22,7 +23,9 @@ ReactDOM.createRoot(document.getElementById("root")).render(
       <ChakraProvider theme={theme}>
         <CSSReset />
         <AnimatePresence>
-          <App />
+          <CBTProvider>
+            <App />
+          </CBTProvider>
         </AnimatePresence>
       </ChakraProvider>
     </Provider>

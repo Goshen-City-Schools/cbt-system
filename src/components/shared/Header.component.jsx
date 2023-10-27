@@ -1,11 +1,38 @@
 import { Link } from "react-router-dom";
-
 import { BsChevronDown } from "react-icons/bs";
 
-import { Flex, Box, Image, Text } from "@chakra-ui/react";
+import {
+  Box,
+  Image,
+  Flex,
+  Popover,
+  PopoverTrigger,
+  PopoverContent,
+  Button,
+  PopoverArrow,
+  PopoverCloseButton,
+  PopoverBody,
+  Text,
+} from "@chakra-ui/react";
 import Timer from "./TimerBox";
+import { useCBT } from "../../contexts/CBTContext"; // Import the useCBT hook
+import { useNavigate } from "react-router-dom";
+import { logout } from "../../redux/slices/formSlice";
+import { useDispatch } from "react-redux";
 
 export default function Header() {
+  const { state } = useCBT(); // Access the CBT context
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+  const handleLogout = () => {
+    // Dispatch the logout action when the "Logout" button is clicked
+    dispatch(logout());
+    console.log("m");
+    setTimeout(() => {
+      navigate("/auth");
+    }, 1000); // Adjust the delay as needed
+  };
+
   return (
     <Box
       bg={"white"}
@@ -29,23 +56,25 @@ export default function Header() {
         </Flex>
       </Flex>
 
-      <Box>
-        <Timer
-          initialTime={3600}
-          onTimerEnd={() => alert("Timer reached zero!")}
-        />
-        <Text
-          as={"h3"}
-          fontSize={"sm"}
-          mt={2}
-          lineHeight={1}
-          fontWeight={"bold"}
-        >
-          Engish Language (Test)
-        </Text>
-      </Box>
+      {state.cbtStarted && ( // Display "for-cbt" box if CBT has started
+        <Box className="for-cbt">
+          <Timer
+            initialTime={3600}
+            onTimerEnd={() => alert("Timer reached zero!")}
+          />
+          <Text
+            as={"h3"}
+            fontSize={"sm"}
+            mt={2}
+            lineHeight={1}
+            fontWeight={"bold"}
+          >
+            Engish Language (Test)
+          </Text>
+        </Box>
+      )}
 
-      <div className="flex items-center gap-4 text-sm">
+      <div className="flex items-center gap-4">
         <div className="absolute top-20 hidden">
           <ul>
             <li>
@@ -62,16 +91,43 @@ export default function Header() {
           <p>First Term</p>
         </div>
 
-        <Link to="/dashboard/profile" className="flex gap-3 items-center">
-          <div className="h-11 w-11 rounded-full shadow-md overflow-hidden relative">
-            <img
-              src="/images/avatar.png"
-              alt="User avatar"
-              className="absolute object-cover w-full h-full"
-            />
-          </div>
-          <BsChevronDown size={18} />.
-        </Link>
+        <Popover>
+          <PopoverTrigger>
+            <Box className="flex gap-3 items-center" cursor="pointer">
+              <div className="h-11 w-11 rounded-full relative shadow-md overflow-hidden">
+                <img
+                  src="/images/avatar.png"
+                  alt="User avatar"
+                  className="absolute object-cover w-full h-full"
+                />
+              </div>
+              <BsChevronDown size={20} />
+            </Box>
+          </PopoverTrigger>
+          <PopoverContent>
+            <PopoverArrow />
+            <PopoverCloseButton />
+
+            <PopoverBody>
+              <Button
+                variant="ghost"
+                w="100%"
+                justifyContent="flex-start"
+                onClick={() => navigate("/admin/profile")}
+              >
+                My Profile
+              </Button>
+              <Button
+                variant="ghost"
+                w="100%"
+                justifyContent="flex-start"
+                onClick={handleLogout}
+              >
+                Logout
+              </Button>
+            </PopoverBody>
+          </PopoverContent>
+        </Popover>
       </div>
     </Box>
   );
