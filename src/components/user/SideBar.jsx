@@ -1,4 +1,4 @@
-import { Box, List, Text, Flex, Image } from "@chakra-ui/react";
+import { Box, List, Text, Flex, Image, Grid } from "@chakra-ui/react";
 
 import { TbReport } from "react-icons/tb";
 import { MdOutlineAssignment } from "react-icons/md";
@@ -10,9 +10,12 @@ import NavItemComponent from "../shared/NavItem.component";
 import { toggleSideMenu } from "../../redux/slices/menuSlice";
 import IconComponent from "../shared/Icon.component";
 import { FaTimes } from "react-icons/fa";
+import { useCBT } from "../../contexts/CBTContext";
+import Timer from "../shared/TimerBox";
 
 export default function UserSideBar() {
   const dispatch = useDispatch();
+  const { state } = useCBT();
 
   const isSideMenuOpen = useSelector((state) => state.menu.isSideMenuOpen);
 
@@ -123,6 +126,38 @@ export default function UserSideBar() {
           </NavItemComponent>
         </List>
       </Box>
+
+      {state.cbtStarted && (
+        <Flex
+          direction={"column"}
+          w={"full"}
+          alignItems={"center"}
+          color={"white"}
+          mt={6}
+          justifySelf={"flex-end"}
+          alignSelf={"flex-end"}
+          mb={6}
+        >
+          <Text as={"h3"} fontSize={"lg"} fontWeight={"bold"}>
+            Time remaining
+          </Text>
+          <Grid
+            placeItems={"center"}
+            width={"160px"}
+            height={"160px"}
+            rounded={"full"}
+            border={"1px solid"}
+            mt={4}
+            overflow={"hidden"}
+            bg={"white"}
+          >
+            <Timer
+              initialTime={3600}
+              onTimerEnd={() => alert("Timer reached zero!")}
+            />
+          </Grid>
+        </Flex>
+      )}
     </Flex>
   );
 }

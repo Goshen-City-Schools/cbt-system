@@ -1,4 +1,4 @@
-import { Box, List, Text, Flex, Image, Grid } from "@chakra-ui/react";
+import { Box, List, Text, Flex, Image } from "@chakra-ui/react";
 
 import { TbReport } from "react-icons/tb";
 import { MdOutlineAssignment } from "react-icons/md";
@@ -11,7 +11,6 @@ import { toggleSideMenu } from "../../redux/slices/menuSlice";
 import IconComponent from "../shared/Icon.component";
 import { FaTimes } from "react-icons/fa";
 import { useCBT } from "../../contexts/CBTContext";
-import Timer from "../shared/TimerBox";
 
 export default function AdminSideBar() {
   const dispatch = useDispatch();
@@ -106,58 +105,44 @@ export default function AdminSideBar() {
         </Text>
 
         <List className="memuList">
-          <NavItemComponent link={"/exams"}>
+          <NavItemComponent link={"/admin/exams"}>
             <div className="icon h-6 w-6 flex items-center justify-center">
               <MdOutlineAssignment size={18} />
             </div>
             Exams Settings
           </NavItemComponent>
-          <NavItemComponent link={"/assessments"}>
+          <NavItemComponent link={"/admin/assessments"}>
+            <div className="icon h-6 w-6 flex items-center justify-center">
+              <MdOutlineAssignment size={18} />
+            </div>
+            Assesments Settings
+          </NavItemComponent>
+          <NavItemComponent link={"/admin/exams/new"}>
             <div className="icon h-6 w-6 flex items-center justify-center">
               <MdOutlineAssignment size={18} />
             </div>
             Set Exam Questions
           </NavItemComponent>
-          <NavItemComponent link={"/view-scores"}>
+          <NavItemComponent link={"/admin/assessments/new"}>
+            <div className="icon h-6 w-6 flex items-center justify-center">
+              <MdOutlineAssignment size={18} />
+            </div>
+            Set Test Questions
+          </NavItemComponent>
+          <NavItemComponent link={"/admin/#"}>
             <div className="icon h-6 w-6 flex items-center justify-center">
               <TbReport size={18} />
             </div>
-            View Scores
+            Sync Students Data
+          </NavItemComponent>
+          <NavItemComponent link={"/admin/results"}>
+            <div className="icon h-6 w-6 flex items-center justify-center">
+              <TbReport size={18} />
+            </div>
+            Results
           </NavItemComponent>
         </List>
       </Box>
-
-      {state.cbtStarted && (
-        <Flex
-          direction={"column"}
-          w={"full"}
-          alignItems={"center"}
-          color={"white"}
-          mt={6}
-          justifySelf={"flex-end"}
-          alignSelf={"flex-end"}
-          mb={6}
-        >
-          <Text as={"h3"} fontSize={"lg"} fontWeight={"bold"}>
-            Time remaining
-          </Text>
-          <Grid
-            placeItems={"center"}
-            width={"160px"}
-            height={"160px"}
-            rounded={"full"}
-            border={"1px solid"}
-            mt={4}
-            overflow={"hidden"}
-            bg={"white"}
-          >
-            <Timer
-              initialTime={3600}
-              onTimerEnd={() => alert("Timer reached zero!")}
-            />
-          </Grid>
-        </Flex>
-      )}
     </Flex>
   );
 }

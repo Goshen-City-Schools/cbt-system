@@ -1,4 +1,3 @@
-import { Link } from "react-router-dom";
 import { BsChevronDown } from "react-icons/bs";
 
 import {
@@ -79,17 +78,6 @@ export default function Header() {
       )}
 
       <div className="flex items-center gap-4">
-        <div className="absolute top-20 hidden">
-          <ul>
-            <li>
-              <Link>My Profile</Link>
-            </li>
-            <li>
-              <Link>Settings</Link>
-            </li>
-          </ul>
-        </div>
-
         <div className="flex flex-col">
           <p className="font-bold first-letter:">2023/2024 session</p>
           <p>First Term</p>
@@ -113,14 +101,14 @@ export default function Header() {
             <PopoverCloseButton />
 
             <PopoverBody>
-              <Button
+              {/* <Button
                 variant="ghost"
                 w="100%"
                 justifyContent="flex-start"
                 onClick={() => navigate("/admin/profile")}
               >
                 My Profile
-              </Button>
+              </Button> */}
               <Button
                 variant="ghost"
                 w="100%"

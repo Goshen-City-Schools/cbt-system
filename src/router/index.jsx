@@ -20,6 +20,10 @@ import MyAssessmentTestPage from "../pages/user/assessments";
 import MoodlePage from "../screens/Moodle";
 import HomePage from "../pages/admin/Home";
 import AdminNotFound from "../pages/AdminNotFound";
+import ExamsPage from "../pages/admin/Exams";
+import AssessmentsPage from "../pages/admin/Assessments";
+import SetNewExamPage from "../pages/admin/Exams/New";
+import SetNewTestPage from "../pages/admin/Assessments/New";
 
 // Admin Pages
 
@@ -43,6 +47,14 @@ const router = createBrowserRouter(
       <Route element={<AdminLayout />}>
         <Route path="/admin">
           <Route index element={<HomePage />} />
+          <Route path="exams">
+            <Route index element={<ExamsPage />} />
+            <Route path="new" element={<SetNewExamPage />} />
+          </Route>
+          <Route path="assessments">
+            <Route index element={<AssessmentsPage />} />
+            <Route path="new" element={<SetNewTestPage />} />
+          </Route>
 
           <Route path="*" element={<AdminNotFound />} />
         </Route>
