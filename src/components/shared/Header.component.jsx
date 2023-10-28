@@ -14,7 +14,6 @@ import {
   PopoverBody,
   Text,
 } from "@chakra-ui/react";
-import Timer from "./TimerBox";
 import { useCBT } from "../../contexts/CBTContext"; // Import the useCBT hook
 import { useNavigate } from "react-router-dom";
 import { logout } from "../../redux/slices/formSlice";
@@ -39,39 +38,44 @@ export default function Header() {
       paddingX={6}
       className="h-20 sticky top-0 left-0 z-40 shadow-md w-full flex items-center justify-between"
     >
-      <Flex alignItems={"center"}>
-        <Image
-          src="/public/images/Goshen-logo-trans.png"
-          height={"60px"}
-          width={"60px"}
-          objectFit={"cover"}
-        />
-        <Flex direction={"column"} h={"full"} justifyContent={"center"}>
-          <Text as={"h3"} fontSize={"md"} mt={2} lineHeight={1}>
-            GOSHEN GROUP OF SCHOOLS
-          </Text>
-          <Text as={"h3"} fontWeight={"bold"}>
-            CBT Portal
-          </Text>
-        </Flex>
-      </Flex>
-
-      {state.cbtStarted && ( // Display "for-cbt" box if CBT has started
-        <Box className="for-cbt">
-          <Timer
-            initialTime={3600}
-            onTimerEnd={() => alert("Timer reached zero!")}
-          />
+      {state.cbtStarted ? ( // Display "for-cbt" box if CBT has started
+        <Flex direction={"column"} className="for-cbt">
           <Text
             as={"h3"}
-            fontSize={"sm"}
+            fontSize={"md"}
             mt={2}
             lineHeight={1}
             fontWeight={"bold"}
           >
-            Engish Language (Test)
+            <span>Subject: </span> Engish Language (Test)
           </Text>
-        </Box>
+          <Text
+            as={"h3"}
+            fontSize={"md"}
+            mt={2}
+            lineHeight={1}
+            fontWeight={"bold"}
+          >
+            <span>Duration: </span> 1 hr
+          </Text>
+        </Flex>
+      ) : (
+        <Flex alignItems={"center"} justifyContent={"center"}>
+          <Image
+            src="/images/Goshen-logo-trans.png"
+            height={"60px"}
+            width={"60px"}
+            objectFit={"cover"}
+          />
+          <Flex direction={"column"} h={"full"} justifyContent={"center"}>
+            <Text as={"h3"} fontSize={"md"} mt={2} lineHeight={1}>
+              GOSHEN GROUP OF SCHOOLS
+            </Text>
+            <Text as={"h3"} fontWeight={"bold"}>
+              CBT Portal
+            </Text>
+          </Flex>
+        </Flex>
       )}
 
       <div className="flex items-center gap-4">

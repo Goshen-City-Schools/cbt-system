@@ -1,6 +1,6 @@
 import PageWrapper from "../../../components/shared/PageWrapper";
 
-import { Flex, Text } from "@chakra-ui/react";
+import { Flex } from "@chakra-ui/react";
 
 import AssesssmentTestCard from "../../../components/shared/cards/AssesssmentTest";
 import PageSectionHeader from "../../../components/shared/PageSectionHeader";
@@ -15,10 +15,7 @@ export default function MyAssessmentTestPage() {
         pageCrumb={"Home / Assessments"}
       />
 
-      <Text as={"h1"} my={4}>
-        Upcoming Assessments
-      </Text>
-      <Flex gap={"4"}>
+      <Flex gap={"4"} mt={4}>
         {testData.map(({ id, subject, duration, date }) => (
           <AssesssmentTestCard
             key={id}

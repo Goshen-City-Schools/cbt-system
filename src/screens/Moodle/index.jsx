@@ -7,6 +7,7 @@ import { testData } from "../../data/tests.data";
 import { useCBT } from "../../contexts/CBTContext";
 
 import { FaChevronLeft, FaChevronRight } from "react-icons/fa";
+import CBTNotStarted from "../CBTNotStarted";
 
 export default function MoodlePage() {
   const { assessmentID } = useParams();
@@ -15,7 +16,7 @@ export default function MoodlePage() {
   const subjectData = testData.find((subject) => subject.id == assessmentID);
 
   if (!state.cbtStarted) {
-    return <p>CBT has not started yet.</p>;
+    return <CBTNotStarted />;
   }
 
   if (!subjectData || !subjectData.questions) {

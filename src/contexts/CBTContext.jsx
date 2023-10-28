@@ -12,7 +12,7 @@ const initialState = {
     initialTime: 0,
     timeLeft: 0,
   },
-  cbtStarted: true, // Flag to indicate whether the CBT has started
+  cbtStarted: false, // Flag to indicate whether the CBT has started
 };
 
 // Create a context for the CBT
