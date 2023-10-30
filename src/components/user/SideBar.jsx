@@ -29,7 +29,7 @@ export default function UserSideBar() {
       h={"full"}
       justifyContent={"flex-start"}
       bg={"brand.900"}
-      width={{ "base": isSideMenuOpen ? "240px" : "0px", "md": "240px" }}
+      width={{ "base": isSideMenuOpen ? "280px" : "0px", "md": "280px" }}
       position={"fixed"}
       top={0}
       fontSize={"sm"}

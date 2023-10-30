@@ -130,12 +130,17 @@ export const examsQuestionsData = [
 
 export const examsData = [
   {
-    class: "Basic 1",
-    subject: "English Language",
-    date: formatDate(Date.now()),
-    time: "10:00 AM",
-    duration: "1 hr",
-    examQuestion: 1,
+    "id": "",
+    "subject": "English Language",
+    "class": "Basic 1",
+    "date": formatDate(Date.now()),
+    "time": "10:00 AM",
+    "duration": "1 hr",
+    "questions": {
+      "question": "",
+      "options": [],
+      "correctOption": "",
+    },
   },
   {
     class: "Basic 1",
@@ -226,3 +231,21 @@ export const examsData = [
     examQuestion: 1,
   },
 ];
+
+export const examSchema = {
+  "id": "",
+  "subject": "English Language",
+  "class": "Basic 1",
+  "term": "",
+  "session": "",
+  "date": formatDate(Date.now()),
+  "time": "10:00 AM",
+  "duration": "1 hr",
+  "questions": [
+    {
+      "question": "",
+      "options": [],
+      "correctOption": "",
+    },
+  ],
+};

@@ -16,28 +16,30 @@ export default function NavItemComponent({ link, children, submenu, click }) {
 
   return link ? (
     <ListItem
+      mb={1.5}
       rounded={"md"}
-      _hover={{ bg: "brand.700", color: "white", cursor: "pointer" }}
+      _hover={{ bg: "brand.200", color: "brand.700", cursor: "pointer" }}
       className={`flex justify-start font-bold items-center ${
-        linkIsActive(link) ? "bg-blue-800" : ""
+        linkIsActive(link) ? "bg-blue-200" : ""
       }`}
       onClick={click}
     >
       <NavLink
         to={link}
-        className="flex w-full h-full pl-4 py-3 gap-3 justify-start font-bold items-center"
+        className="flex w-full h-full pl-4 py-2 gap-3 justify-start font-bold items-center"
       >
         {children}
       </NavLink>
     </ListItem>
   ) : (
     <ListItem
+      mb={1.5}
       roundedTopLeft="md"
       roundedBottomLeft="md"
       display="flex"
       flexDirection={"column"}
-      _hover={{ bg: "brand.700", color: "white", cursor: "pointer" }}
-      className="flex justify-start pl-4 py-3 font-bold items-center"
+      _hover={{ bg: "brand.200", color: "brand.700", cursor: "pointer" }}
+      className="flex justify-start pl-4 py-2 font-bold items-center"
       onClick={handleToggleSubmenu}
     >
       <Box

@@ -4,7 +4,7 @@ import { Flex, Box } from "@chakra-ui/react";
 const QuestionNumbersBox = ({
   totalQuestions,
   boxesPerRow,
-  answeredQuestions,
+  // answeredQuestions,
   currentQuestionIndex, // Add currentQuestionIndex as a prop
 }) => {
   const rows = Math.ceil(totalQuestions / boxesPerRow);
@@ -12,13 +12,9 @@ const QuestionNumbersBox = ({
   const generateBoxes = (start, end) => {
     const boxes = [];
     for (let i = start; i <= end; i++) {
-      const isAnswered = answeredQuestions.includes(i);
+      // if isAnswered const isAnswered = answeredQuestions.includes(i);
       const isActive = i === currentQuestionIndex; // Check if the question is active
-      const boxColor = isAnswered
-        ? "green.400"
-        : isActive
-        ? "blue.400"
-        : "brand.200";
+      const boxColor = isActive ? "blue.400" : "brand.200";
 
       boxes.push(
         <Flex

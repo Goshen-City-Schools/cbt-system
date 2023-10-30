@@ -6,7 +6,7 @@ export default function UserLayout() {
   return (
     <div className="relative">
       <UserSideBar />
-      <main className="ml-[240px] overflow-x-hidden bg-[#F1F1F1]">
+      <main className="ml-[280px] overflow-x-hidden bg-[#F1F1F1]">
         <Header />
         <Outlet />
       </main>

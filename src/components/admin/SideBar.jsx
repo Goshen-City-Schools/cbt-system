@@ -2,6 +2,7 @@ import { Box, List, Text, Flex, Image } from "@chakra-ui/react";
 
 import { TbReport } from "react-icons/tb";
 import { MdOutlineAssignment } from "react-icons/md";
+import { BiEditAlt } from "react-icons/bi";
 
 import "./SideMenu.style.css";
 
@@ -27,8 +28,8 @@ export default function AdminSideBar() {
       direction={"column"}
       h={"full"}
       justifyContent={state.cbtStarted ? "space-between" : "flex-start"}
-      bg={"brand.900"}
-      width={{ "base": isSideMenuOpen ? "240px" : "0px", "md": "240px" }}
+      bg={"white"}
+      width={{ "base": isSideMenuOpen ? "280px" : "0px", "md": "280px" }}
       position={"fixed"}
       top={0}
       fontSize={"sm"}
@@ -44,7 +45,6 @@ export default function AdminSideBar() {
         top={"80px"}
         right={"0"}
         bg={"red.700"}
-        color={"white"}
         h={10}
         w={10}
         rounded={"full"}
@@ -64,82 +64,71 @@ export default function AdminSideBar() {
           direction={"column"}
           justifyContent={"center"}
           alignItems={"center"}
+          gap={4}
+          mt={6}
+          mb={12}
         >
           <Image
             src="/images/Goshen-logo-trans.png"
-            height={"80px"}
-            width={"80px"}
+            height={"100px"}
+            width={"100px"}
             objectFit={"cover"}
           />
 
-          <Box
-            width={"160px"}
-            height={"160px"}
-            rounded={"full"}
-            border={"1px solid"}
-            mt={4}
-            overflow={"hidden"}
+          <Text
+            as={"h3"}
+            fontWeight={"bold"}
+            fontSize={"md"}
+            color={"brand.900"}
           >
-            <Image
-              src="/images/profile-picture.jpeg"
-              height={"full"}
-              w={"full"}
-              objectFit={"cover"}
-            />
-          </Box>
-        </Flex>
-
-        <Flex color={"white"} textAlign={"center"} direction={"column"} gap={1}>
-          <Text as={"h3"} fontSize={"md"} fontWeight={"bold"}>
-            Nkechinyere Harrison
-          </Text>
-          <Text as={"small"} fontSize={"sm"}>
-            IT Support
+            GOSHEN GROUP OF SCHOOLS
           </Text>
         </Flex>
       </Flex>
 
-      <Box className="pl-5 py-6" color="neutral.100">
-        <Text as="h3" marginBottom={2}>
-          MENU
-        </Text>
-
+      <Box className="px-4 py-6">
         <List className="memuList">
           <NavItemComponent link={"/admin/exams"}>
-            <div className="icon h-6 w-6 flex items-center justify-center">
-              <MdOutlineAssignment size={18} />
-            </div>
-            Exams Settings
-          </NavItemComponent>
-          <NavItemComponent link={"/admin/assessments"}>
-            <div className="icon h-6 w-6 flex items-center justify-center">
-              <MdOutlineAssignment size={18} />
-            </div>
-            Assesments Settings
-          </NavItemComponent>
-          <NavItemComponent link={"/admin/exams/new"}>
-            <div className="icon h-6 w-6 flex items-center justify-center">
-              <MdOutlineAssignment size={18} />
-            </div>
+            <IconComponent>
+              <BiEditAlt size={18} />
+            </IconComponent>
             Set Exam Questions
           </NavItemComponent>
-          <NavItemComponent link={"/admin/assessments/new"}>
-            <div className="icon h-6 w-6 flex items-center justify-center">
-              <MdOutlineAssignment size={18} />
-            </div>
+          <NavItemComponent link={"/admin/assessments"}>
+            <IconComponent>
+              <BiEditAlt size={18} />
+            </IconComponent>
             Set Test Questions
+          </NavItemComponent>{" "}
+          <NavItemComponent link={"/admin/assessments/new"}>
+            <IconComponent>
+              <BiEditAlt size={18} />
+            </IconComponent>
+            Edit Test Questions
+          </NavItemComponent>
+          <NavItemComponent link={"/admin/exams/new"}>
+            <IconComponent>
+              <BiEditAlt size={18} />
+            </IconComponent>
+            Edit Exam Questions
           </NavItemComponent>
           <NavItemComponent link={"/admin/#"}>
-            <div className="icon h-6 w-6 flex items-center justify-center">
+            <IconComponent>
               <TbReport size={18} />
-            </div>
-            Sync Students Data
+            </IconComponent>
+            Sync Students Record
           </NavItemComponent>
           <NavItemComponent link={"/admin/results"}>
-            <div className="icon h-6 w-6 flex items-center justify-center">
+            <IconComponent>
               <TbReport size={18} />
-            </div>
-            Results
+            </IconComponent>
+            Result Format
+          </NavItemComponent>
+          <NavItemComponent link={"/admin/results"}>
+            <IconComponent>
+              <TbReport size={18} />
+            </IconComponent>
+            Download Result
           </NavItemComponent>
         </List>
       </Box>
