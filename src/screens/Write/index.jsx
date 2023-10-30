@@ -156,13 +156,7 @@ export default function WritePage({ type, subject, subjectClass }) {
     <Flex gap={4} color={"neutral.900"}>
       <Box>
         <Box mt={0} px={6} py={4} bg={"white"} rounded={"lg"}>
-          <Text
-            as={"h1"}
-            fontWeight={"bold"}
-            mb={4}
-            fontSize={"lg"}
-            letterSpacing={0.5}
-          >
+          <Text as={"h2"} fontWeight={"bold"} mb={4}>
             QUESTION {questions.length + 1}:
           </Text>{" "}
           <ReactQuill
@@ -194,14 +188,14 @@ export default function WritePage({ type, subject, subjectClass }) {
 
         <Flex w={"full"} justifyContent={"space-between"} gap={4} my={2}>
           <Box w={"full"} px={6} py={4} bg={"white"} rounded={"lg"}>
-            <Text as={"h2"} fontWeight={"bold"} mb={2}>
+            <Text as={"h2"} fontSize={"sm"} fontWeight={"bold"} mb={2}>
               CORRECT OPTION:
             </Text>{" "}
             <Input size={"sm"} w={"max-content"} />
           </Box>
 
           <Box w={"full"} px={6} py={4} bg={"white"} rounded={"lg"}>
-            <Text as={"h2"} fontWeight={"bold"} mb={2}>
+            <Text as={"h2"} fontSize={"sm"} fontWeight={"bold"} mb={2}>
               SET MARK:
             </Text>{" "}
             <Input

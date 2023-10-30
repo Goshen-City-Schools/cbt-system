@@ -48,7 +48,7 @@ export default function NavItemComponent({ link, children, submenu, click }) {
         gap={4}
         justifyContent={"space-between"}
       >
-        <Box display="flex" width={"full"} gap={4}>
+        <Box display="flex" width={"full"} gap={3}>
           {children}
         </Box>
         <IconComponent>

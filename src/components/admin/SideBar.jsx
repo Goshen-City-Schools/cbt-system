@@ -1,7 +1,6 @@
 import { Box, List, Text, Flex, Image } from "@chakra-ui/react";
 
 import { TbReport } from "react-icons/tb";
-import { MdOutlineAssignment } from "react-icons/md";
 import { BiEditAlt } from "react-icons/bi";
 
 import "./SideMenu.style.css";
@@ -64,7 +63,7 @@ export default function AdminSideBar() {
           direction={"column"}
           justifyContent={"center"}
           alignItems={"center"}
-          gap={4}
+          gap={3}
           mt={6}
           mb={12}
         >
@@ -88,7 +87,12 @@ export default function AdminSideBar() {
 
       <Box className="px-4 py-6">
         <List className="memuList">
-          <NavItemComponent link={"/admin/exams"}>
+          <NavItemComponent
+            submenu={[
+              { name: "Type Questions", link: "/admin/exams/create" },
+              { name: "Upload Questions", link: "/admin/exams" },
+            ]}
+          >
             <IconComponent>
               <BiEditAlt size={18} />
             </IconComponent>
