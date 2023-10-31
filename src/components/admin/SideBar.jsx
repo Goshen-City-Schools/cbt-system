@@ -10,11 +10,11 @@ import NavItemComponent from "../shared/NavItem.component";
 import { toggleSideMenu } from "../../redux/slices/menuSlice";
 import IconComponent from "../shared/Icon.component";
 import { FaTimes } from "react-icons/fa";
-import { useCBT } from "../../contexts/CBTContext";
+// import { useCBT } from "../../contexts/CBTContext";
 
 export default function AdminSideBar() {
   const dispatch = useDispatch();
-  const { state } = useCBT();
+  // const { state } = useCBT();
 
   const isSideMenuOpen = useSelector((state) => state.menu.isSideMenuOpen);
 
@@ -26,7 +26,7 @@ export default function AdminSideBar() {
     <Flex
       direction={"column"}
       h={"full"}
-      justifyContent={state.cbtStarted ? "space-between" : "flex-start"}
+      justifyContent={"flex-start"}
       bg={"white"}
       width={{ "base": isSideMenuOpen ? "280px" : "0px", "md": "280px" }}
       position={"fixed"}
@@ -89,7 +89,7 @@ export default function AdminSideBar() {
         <List className="memuList">
           <NavItemComponent
             submenu={[
-              { name: "Type Questions", link: "/admin/exams/create" },
+              { name: "Type Questions", link: "/admin/exams/new" },
               { name: "Upload Questions", link: "/admin/exams" },
             ]}
           >
@@ -110,7 +110,7 @@ export default function AdminSideBar() {
             </IconComponent>
             Edit Test Questions
           </NavItemComponent>
-          <NavItemComponent link={"/admin/exams/new"}>
+          <NavItemComponent link={"/admin/exams/"}>
             <IconComponent>
               <BiEditAlt size={18} />
             </IconComponent>

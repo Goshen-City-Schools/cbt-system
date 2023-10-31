@@ -1,12 +1,16 @@
 /* eslint-disable react/prop-types */
 import ReactQuill from "react-quill";
 import "react-quill/dist/quill.snow.css";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 import { Box, Text, Flex, Input, Button, Grid } from "@chakra-ui/react";
-import { FaChevronLeft, FaPlus, FaSave } from "react-icons/fa";
-
-import formatDate from "../../utilities/formatDate.utils";
+import { FaPlus, FaSave } from "react-icons/fa";
+import saveExamQuestions from "../../utilities/saveExamQuestions";
+import loadExamQuestions from "../../utilities/loadExamQuestions";
+import calculateTotalAllottedMarks from "../../utilities/totalAlottedMarks";
+import { useNavigate } from "react-router-dom";
+import { useParams } from "react-router-dom";
+import NumberedQuestionList from "../../components/shared/NumberedQuestionList";
 
 const Options = ({ questionToEdit, handleOptionChange }) => {
   return (
@@ -47,35 +51,30 @@ const Options = ({ questionToEdit, handleOptionChange }) => {
   );
 };
 
-export default function WritePage({ type, subject, subjectClass }) {
-  const [questions, setQuestions] = useState([
-    {
-      id: "bbe6ba32-1518-41cc-bf97-3013eef9dc4d",
-      question: "who are you?",
-      options: [
-        {
-          label: "a",
-          "text": "Hello",
-        },
-        {
-          label: "b",
-          "text": "Hello",
-        },
-        {
-          label: "c",
-          "text": "Hello",
-        },
-        {
-          label: "d",
-          "text": "Hello",
-        },
-      ],
-      correctOption: "a",
-    },
-  ]);
-  const [mark, setMark] = useState(5);
-  const [questionToEdit, setQuestionToEdit] = useState({});
-  const [newQuestion, setNewQuestion] = useState({
+export default function WritePage({ subject, subjectExamId }) {
+  const [questions, setQuestions] = useState([]);
+  const { questionIndex } = useParams();
+
+  const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
+
+  const navigateToQuestion = (index) => {
+    navigate(`/admin/exams/${subjectExamId}/${index}`);
+    setCurrentQuestionIndex(index);
+  };
+
+  const parsedQuestionIndex = parseInt(questionIndex, 10);
+  const currentIndex =
+    !isNaN(parsedQuestionIndex) &&
+    parsedQuestionIndex >= 0 &&
+    parsedQuestionIndex < questions.length
+      ? parsedQuestionIndex
+      : null;
+
+  const [viewIndex, setViewIndex] = useState(currentIndex + 1);
+  const navigate = useNavigate();
+  const [ctq, setCTQ] = useState(0);
+
+  const initialQuestion = {
     question: "",
     options: [
       { label: "a", text: "" },
@@ -84,14 +83,56 @@ export default function WritePage({ type, subject, subjectClass }) {
       { label: "d", text: "" },
     ],
     correctOption: "a",
-  });
+    allotedMark: 5,
+  };
+  const [newQuestion, setNewQuestion] = useState(initialQuestion);
 
-  function handleSetQuestion() {
-    const updatedQuestions = [...questions, newQuestion];
+  useEffect(() => {
+    const loadedQuestions = loadExamQuestions(subjectExamId);
+    setQuestions(loadedQuestions);
+
+    setCTQ(calculateTotalAllottedMarks(loadedQuestions));
+
+    if (
+      !isNaN(parsedQuestionIndex) &&
+      parsedQuestionIndex >= 0 &&
+      parsedQuestionIndex < loadedQuestions.length
+    ) {
+      setNewQuestion(loadedQuestions[parsedQuestionIndex]);
+      setViewIndex(parsedQuestionIndex + 1);
+    } else if (
+      !isNaN(parsedQuestionIndex) &&
+      parsedQuestionIndex === loadedQuestions.length
+    ) {
+      setViewIndex(parsedQuestionIndex + 1);
+    } else {
+      setViewIndex(0);
+    }
+  }, [subjectExamId, questionIndex]);
+
+  const handleSaveQuestion = () => {
+    const updatedQuestions = [...questions];
+
+    if (currentIndex !== null) {
+      // If currentIndex is valid, update the existing question
+      updatedQuestions[currentIndex] = newQuestion;
+    } else {
+      // If currentIndex is null, it means this is a new question, so add it to the end
+      updatedQuestions.push(newQuestion);
+    }
+
+    const totalAllottedMarks = calculateTotalAllottedMarks(updatedQuestions);
+    setCTQ(totalAllottedMarks);
+
     setQuestions(updatedQuestions);
-    setQuestionToEdit(newQuestion);
+
+    saveExamQuestions(subjectExamId, updatedQuestions);
+  };
+
+  const handleNewQuestion = () => {
     // Reset newQuestion state for the next new question
-    setNewQuestion({
+    setNewQuestion((prevNewQuestion) => ({
+      ...prevNewQuestion,
       question: "",
       options: [
         { label: "a", text: "" },
@@ -100,15 +141,50 @@ export default function WritePage({ type, subject, subjectClass }) {
         { label: "d", text: "" },
       ],
       correctOption: "a",
-    });
+      allotedMark: 5,
+    }));
 
-    console.log(questions);
-  }
+    // Calculate the index for the new question
+    const newQuestionIndex = questions.length;
+
+    // Save the current question before creating a new one
+    handleSaveQuestion();
+
+    // Navigate to the new question
+    navigate(`/admin/exams/${subjectExamId}/${newQuestionIndex}`);
+    setCurrentQuestionIndex(newQuestionIndex);
+  };
+
   function handlePrevQuestion() {
-    const prevQuestion = questions[1];
+    if (questions.length > 0) {
+      // Calculate the index of the previous question
+      const prevQuestionIndex = parseInt(questionIndex, 10) - 1;
 
-    console.log(prevQuestion);
-    setQuestionToEdit(prevQuestion);
+      // Ensure the previous index is within bounds
+      if (prevQuestionIndex >= 0 && prevQuestionIndex < questions.length) {
+        // Navigate to the previous question's details page
+        navigate(`/admin/exams/${subjectExamId}/${prevQuestionIndex}`);
+        setViewIndex(prevQuestionIndex + 1); // Update viewIndex to the previous question
+        // Reset options when going to the previous question
+        setNewQuestion((prevNewQuestion) => ({
+          ...prevNewQuestion,
+          options: [
+            { label: "a", text: "" },
+            { label: "b", text: "" },
+            { label: "c", text: "" },
+            { label: "d", text: "" },
+          ],
+        }));
+      }
+    }
+  }
+
+  function handleCorrectOptionChange(option) {
+    setNewQuestion({ ...newQuestion, correctOption: option });
+  }
+
+  function handleAllotedMarkChange(mark) {
+    setNewQuestion({ ...newQuestion, allotedMark: parseInt(mark, 10) });
   }
 
   function handleNewQuestionChange(value) {
@@ -143,13 +219,14 @@ export default function WritePage({ type, subject, subjectClass }) {
   const module = { toolbar: toolbarOptions };
 
   const examDetails = {
-    session: "2023/2024",
-    term: "First Term",
-    subject: "Civic Education",
-    class: "SSS 2",
-    date: formatDate(Date.now()),
-    time: "10:15 AM",
-    duration: ["30", " ", "mins"],
+    session: subject.session,
+    term: subject.term,
+    subject: subject.subject,
+    class: subject.class,
+    date: subject.date,
+    time: subject.time,
+    duration: subject.duration,
+    "exam Marks": `${subject.examMarks} marks`,
   };
 
   return (
@@ -157,7 +234,7 @@ export default function WritePage({ type, subject, subjectClass }) {
       <Box>
         <Box mt={0} px={6} py={4} bg={"white"} rounded={"lg"}>
           <Text as={"h2"} fontWeight={"bold"} mb={4}>
-            QUESTION {questions.length + 1}:
+            QUESTION {viewIndex}:
           </Text>{" "}
           <ReactQuill
             theme="snow"
@@ -170,10 +247,9 @@ export default function WritePage({ type, subject, subjectClass }) {
 
         <Box my={4} px={6} py={4} bg={"white"} rounded={"lg"} w={"full"}>
           <Options
-            handleOptionChange={() => handleNewOptionChange()}
+            handleOptionChange={handleNewOptionChange}
             questionToEdit={newQuestion}
           />
-
           <Button
             mt={6}
             colorScheme="purple"
@@ -191,7 +267,12 @@ export default function WritePage({ type, subject, subjectClass }) {
             <Text as={"h2"} fontSize={"sm"} fontWeight={"bold"} mb={2}>
               CORRECT OPTION:
             </Text>{" "}
-            <Input size={"sm"} w={"max-content"} />
+            <Input
+              size={"sm"}
+              value={newQuestion.correctOption}
+              onChange={(e) => handleCorrectOptionChange(e.target.value)}
+              w={"max-content"}
+            />
           </Box>
 
           <Box w={"full"} px={6} py={4} bg={"white"} rounded={"lg"}>
@@ -199,15 +280,22 @@ export default function WritePage({ type, subject, subjectClass }) {
               SET MARK:
             </Text>{" "}
             <Input
-              disabled
+              type="number"
               size={"sm"}
-              value={`${mark} ${mark == 1 ? "mark" : mark > 1 ? "marks" : ""}`}
+              value={newQuestion.allotedMark}
+              onChange={(e) => handleAllotedMarkChange(e.target.value)}
               w={"max-content"}
             />
           </Box>
         </Flex>
 
         <Flex justifyContent={"space-between"} gap={4}>
+          <NumberedQuestionList
+            questions={questions}
+            currentQuestionIndex={currentQuestionIndex}
+            navigateToQuestion={navigateToQuestion}
+          />
+
           <Button
             mt={6}
             colorScheme="blue"
@@ -217,9 +305,9 @@ export default function WritePage({ type, subject, subjectClass }) {
             display={"flex"}
             alignItems={"center"}
             leftIcon={<FaPlus />}
-            onClick={() => handlePrevQuestion()}
+            onClick={handlePrevQuestion}
           >
-            New Question
+            prev question
           </Button>
 
           <Button
@@ -232,7 +320,22 @@ export default function WritePage({ type, subject, subjectClass }) {
             display={"flex"}
             alignItems={"center"}
             rightIcon={<FaSave />}
-            onClick={() => handleSetQuestion()}
+            onClick={handleNewQuestion}
+          >
+            new Question
+          </Button>
+
+          <Button
+            mt={6}
+            colorScheme="blue"
+            bg={"brand.900"}
+            rounded={"none"}
+            size={"sm"}
+            w={"max-content"}
+            display={"flex"}
+            alignItems={"center"}
+            rightIcon={<FaSave />}
+            onClick={handleSaveQuestion}
           >
             Save Question
           </Button>
@@ -293,7 +396,7 @@ export default function WritePage({ type, subject, subjectClass }) {
               Accumulated total marks
             </Text>
             <Text as={"p"} mb={3} fontSize={"sm"} textTransform={"uppercase"}>
-              {questions.length}
+              {ctq}
             </Text>
           </Box>{" "}
           <Box
@@ -312,7 +415,7 @@ export default function WritePage({ type, subject, subjectClass }) {
               fontWeight={"semibold"}
               textTransform={"uppercase"}
             >
-              Expected Total Marks
+              Total Questions:
             </Text>
             <Text as={"p"} mb={3} fontSize={"sm"} textTransform={"uppercase"}>
               {questions.length}

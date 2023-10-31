@@ -22,10 +22,11 @@ import HomePage from "../pages/admin/Home";
 import AdminNotFound from "../pages/AdminNotFound";
 import ExamsPage from "../pages/admin/Exams";
 import AssessmentsPage from "../pages/admin/Assessments";
-import SetNewExamPage from "../pages/admin/Exams/New";
+// import SetNewExamPage from "../pages/admin/Exams/New";
 import SetNewTestPage from "../pages/admin/Assessments/New";
 import WritePage from "../screens/Write";
 import CreateExamQuestionsPage from "../pages/admin/Exams/Create";
+import ExamSetup from "../screens/ExamSetup";
 
 // Admin Pages
 
@@ -51,8 +52,15 @@ const router = createBrowserRouter(
           <Route index element={<HomePage />} />
           <Route path="exams">
             <Route index element={<ExamsPage />} />
-            <Route path="new" element={<SetNewExamPage />} />
+            <Route path="new" element={<ExamSetup />} />
             <Route path="create" element={<CreateExamQuestionsPage />} />
+            <Route path=":subjectExamId">
+              <Route index element={<CreateExamQuestionsPage />} />
+              <Route
+                path=":questionIndex"
+                element={<CreateExamQuestionsPage />}
+              />
+            </Route>
             <Route
               path="write"
               element={<WritePage type={"Exam"} subject={"Subject"} />}

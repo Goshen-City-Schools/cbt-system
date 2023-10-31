@@ -37,7 +37,7 @@ export default function ExamsPage() {
             Download
           </Button>
           <Button
-            as={"Flex"}
+            display={"flex"}
             gap={2}
             size={"sm"}
             bg={"accent.700"}
