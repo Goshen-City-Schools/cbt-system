@@ -3,7 +3,7 @@ import ReactQuill from "react-quill";
 import "react-quill/dist/quill.snow.css";
 import { useState, useEffect } from "react";
 
-import { Box, Text, Flex, Input, Button, Grid } from "@chakra-ui/react";
+import { Box, Text, Flex, Input, Button } from "@chakra-ui/react";
 import { FaPlus, FaSave } from "react-icons/fa";
 import saveExamQuestions from "../../utilities/saveExamQuestions";
 import loadExamQuestions from "../../utilities/loadExamQuestions";
@@ -15,29 +15,24 @@ import NumberedQuestionList from "../../components/shared/NumberedQuestionList";
 const Options = ({ questionToEdit, handleOptionChange }) => {
   return (
     <Flex direction="column" fontSize="sm" gap={4}>
-      {questionToEdit.id ? (
-        questionToEdit?.options?.map((option) => (
-          <Flex key={option.label} gap={4} alignItems="center">
-            <span className="flex-shrink-0 font-bold h-6 w-6 border-dotted rounded-full">
-              {option.label}:
-            </span>
-            <Input
-              value={option.text}
-              onChange={(e) => handleOptionChange(option.label, e.target.value)}
-            />
-          </Flex>
-        ))
-      ) : (
-        <>
-          {questionToEdit.options.map((option) => (
-            <Flex key={option.label} gap={4} alignItems={"center"}>
-              <Grid
-                placeItems={"center"}
-                className="flex-shrink-0 font-bold h-8 w-8 border-dotted border-2 rounded-full"
-              >
-                {option.label.toLocaleUpperCase()}
-              </Grid>
+      {questionToEdit.id
+        ? questionToEdit.options.map((option) => (
+            <Flex key={option.label} gap={4} alignItems="center">
+              <span className="font-bold w-6">{option.label}:</span>
               <Input
+                size={"sm"}
+                value={option.text}
+                onChange={(e) =>
+                  handleOptionChange(option.label, e.target.value)
+                }
+              />
+            </Flex>
+          ))
+        : questionToEdit.options.map((option) => (
+            <Flex key={option.label} gap={4} alignItems={"center"}>
+              <span className="font-bold w-6">{option.label}:</span>
+              <Input
+                size={"sm"}
                 value={option.text}
                 onChange={(e) =>
                   handleOptionChange(option.label, e.target.value)
@@ -45,14 +40,19 @@ const Options = ({ questionToEdit, handleOptionChange }) => {
               />
             </Flex>
           ))}
-        </>
-      )}
     </Flex>
   );
 };
 
-export default function WritePage({ subject, subjectExamId }) {
-  const [questions, setQuestions] = useState([]);
+export default function WritePage({
+  subject,
+  subjectExamId,
+  questions,
+  setQuestions,
+  newQuestion,
+  setNewQuestion,
+}) {
+  // const [questions, setQuestions] = useState([]);
   const { questionIndex } = useParams();
 
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
@@ -74,18 +74,7 @@ export default function WritePage({ subject, subjectExamId }) {
   const navigate = useNavigate();
   const [ctq, setCTQ] = useState(0);
 
-  const initialQuestion = {
-    question: "",
-    options: [
-      { label: "a", text: "" },
-      { label: "b", text: "" },
-      { label: "c", text: "" },
-      { label: "d", text: "" },
-    ],
-    correctOption: "a",
-    allotedMark: 5,
-  };
-  const [newQuestion, setNewQuestion] = useState(initialQuestion);
+  // const [newQuestion, setNewQuestion] = useState(initialQuestion);
 
   useEffect(() => {
     const loadedQuestions = loadExamQuestions(subjectExamId);
@@ -111,6 +100,18 @@ export default function WritePage({ subject, subjectExamId }) {
   }, [subjectExamId, questionIndex]);
 
   const handleSaveQuestion = () => {
+    if (newQuestion.question.trim() === "") {
+      // Check if the question is empty
+      alert("Please enter a question before saving.");
+      return;
+    }
+
+    // Check if any option is empty
+    if (newQuestion.options.some((option) => option.text.trim() === "")) {
+      alert("Please fill in all options before saving.");
+      return;
+    }
+
     const updatedQuestions = [...questions];
 
     if (currentIndex !== null) {
@@ -128,56 +129,6 @@ export default function WritePage({ subject, subjectExamId }) {
 
     saveExamQuestions(subjectExamId, updatedQuestions);
   };
-
-  const handleNewQuestion = () => {
-    // Reset newQuestion state for the next new question
-    setNewQuestion((prevNewQuestion) => ({
-      ...prevNewQuestion,
-      question: "",
-      options: [
-        { label: "a", text: "" },
-        { label: "b", text: "" },
-        { label: "c", text: "" },
-        { label: "d", text: "" },
-      ],
-      correctOption: "a",
-      allotedMark: 5,
-    }));
-
-    // Calculate the index for the new question
-    const newQuestionIndex = questions.length;
-
-    // Save the current question before creating a new one
-    handleSaveQuestion();
-
-    // Navigate to the new question
-    navigate(`/admin/exams/${subjectExamId}/${newQuestionIndex}`);
-    setCurrentQuestionIndex(newQuestionIndex);
-  };
-
-  function handlePrevQuestion() {
-    if (questions.length > 0) {
-      // Calculate the index of the previous question
-      const prevQuestionIndex = parseInt(questionIndex, 10) - 1;
-
-      // Ensure the previous index is within bounds
-      if (prevQuestionIndex >= 0 && prevQuestionIndex < questions.length) {
-        // Navigate to the previous question's details page
-        navigate(`/admin/exams/${subjectExamId}/${prevQuestionIndex}`);
-        setViewIndex(prevQuestionIndex + 1); // Update viewIndex to the previous question
-        // Reset options when going to the previous question
-        setNewQuestion((prevNewQuestion) => ({
-          ...prevNewQuestion,
-          options: [
-            { label: "a", text: "" },
-            { label: "b", text: "" },
-            { label: "c", text: "" },
-            { label: "d", text: "" },
-          ],
-        }));
-      }
-    }
-  }
 
   function handleCorrectOptionChange(option) {
     setNewQuestion({ ...newQuestion, correctOption: option });
@@ -298,37 +249,8 @@ export default function WritePage({ subject, subjectExamId }) {
 
           <Button
             mt={6}
-            colorScheme="blue"
-            variant={"outline"}
-            size={"sm"}
-            w={"max-content"}
-            display={"flex"}
-            alignItems={"center"}
-            leftIcon={<FaPlus />}
-            onClick={handlePrevQuestion}
-          >
-            prev question
-          </Button>
-
-          <Button
-            mt={6}
-            colorScheme="blue"
-            bg={"brand.900"}
-            rounded={"none"}
-            size={"sm"}
-            w={"max-content"}
-            display={"flex"}
-            alignItems={"center"}
-            rightIcon={<FaSave />}
-            onClick={handleNewQuestion}
-          >
-            new Question
-          </Button>
-
-          <Button
-            mt={6}
-            colorScheme="blue"
-            bg={"brand.900"}
+            colorScheme="red"
+            // bg={"brand.900"}
             rounded={"none"}
             size={"sm"}
             w={"max-content"}

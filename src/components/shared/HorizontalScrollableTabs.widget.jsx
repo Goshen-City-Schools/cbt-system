@@ -1,5 +1,6 @@
 /* eslint-disable react/prop-types */
 import { Box, Flex } from "@chakra-ui/react";
+import { Link } from "react-router-dom";
 
 const HorizontalScrollableTabs = ({ tabs, activeTab, onTabClick }) => {
   return (
@@ -18,7 +19,7 @@ const HorizontalScrollableTabs = ({ tabs, activeTab, onTabClick }) => {
           cursor="pointer"
           onClick={() => onTabClick(tab.id)}
         >
-          {tab.label}
+          {tab.link ? <Link to={tab.link}>{tab.label}</Link> : <>{tab.label}</>}
         </Box>
       ))}
     </Flex>

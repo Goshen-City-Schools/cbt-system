@@ -56,6 +56,8 @@ const router = createBrowserRouter(
             <Route path="create" element={<CreateExamQuestionsPage />} />
             <Route path=":subjectExamId">
               <Route index element={<CreateExamQuestionsPage />} />
+              <Route path="preview" element={<CreateExamQuestionsPage />} />
+              <Route path="settings" element={<CreateExamQuestionsPage />} />
               <Route
                 path=":questionIndex"
                 element={<CreateExamQuestionsPage />}

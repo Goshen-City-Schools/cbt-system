@@ -1,5 +1,6 @@
 /* eslint-disable react/prop-types */
 import { Box, Flex, Text, Grid } from "@chakra-ui/react";
+import loadExamQuestions from "../utilities/loadExamQuestions";
 
 function QuestionBox({ question, options, index }) {
   return (
@@ -39,39 +40,42 @@ function QuestionBox({ question, options, index }) {
   );
 }
 
-export default function ExamPreviewScreen() {
-  const examQuestions = [
-    {
-      question: "Which of this is not aligned to names of games?",
-      options: [
-        { "name": "a", "text": "Hockey" },
-        { "name": "b", "text": "Volley" },
-        { "name": "c", "text": "Ballet" },
-        { "name": "d", "text": "Football" },
-      ],
-      correctAnswer: "b",
-    },
-    {
-      question: "Which of this is not aligned to names of games?",
-      options: [
-        { "name": "a", "text": "Hockey" },
-        { "name": "b", "text": "Volley" },
-        { "name": "c", "text": "Ballet" },
-        { "name": "d", "text": "Football" },
-      ],
-      correctAnswer: "b",
-    },
-    {
-      question: "Which of this is not aligned to names of games?",
-      options: [
-        { "name": "a", "text": "Hockey" },
-        { "name": "b", "text": "Volley" },
-        { "name": "c", "text": "Ballet" },
-        { "name": "d", "text": "Football" },
-      ],
-      correctAnswer: "b",
-    },
-  ];
+// eslint-disable-next-line no-unused-vars
+export default function ExamPreviewScreen({ subjectExamId }) {
+  // const examQuestions = [
+  //   {
+  //     question: "Which of this is not aligned to names of games?",
+  //     options: [
+  //       { "name": "a", "text": "Hockey" },
+  //       { "name": "b", "text": "Volley" },
+  //       { "name": "c", "text": "Ballet" },
+  //       { "name": "d", "text": "Football" },
+  //     ],
+  //     correctAnswer: "b",
+  //   },
+  //   {
+  //     question: "Which of this is not aligned to names of games?",
+  //     options: [
+  //       { "name": "a", "text": "Hockey" },
+  //       { "name": "b", "text": "Volley" },
+  //       { "name": "c", "text": "Ballet" },
+  //       { "name": "d", "text": "Football" },
+  //     ],
+  //     correctAnswer: "b",
+  //   },
+  //   {
+  //     question: "Which of this is not aligned to names of games?",
+  //     options: [
+  //       { "name": "a", "text": "Hockey" },
+  //       { "name": "b", "text": "Volley" },
+  //       { "name": "c", "text": "Ballet" },
+  //       { "name": "d", "text": "Football" },
+  //     ],
+  //     correctAnswer: "b",
+  //   },
+  // ];
+
+  const examQuestions = loadExamQuestions(subjectExamId);
   return (
     <Box p={4} bg={"white"} rounded={"lg"}>
       <Flex direction={"column"} gap={8}>
