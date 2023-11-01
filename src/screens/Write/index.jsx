@@ -1,6 +1,7 @@
 /* eslint-disable react/prop-types */
 import ReactQuill from "react-quill";
 import "react-quill/dist/quill.snow.css";
+
 import { useState, useEffect } from "react";
 
 import { Box, Text, Flex, Input, Button } from "@chakra-ui/react";
@@ -11,35 +12,34 @@ import calculateTotalAllottedMarks from "../../utilities/totalAlottedMarks";
 import { useNavigate } from "react-router-dom";
 import { useParams } from "react-router-dom";
 import NumberedQuestionList from "../../components/shared/NumberedQuestionList";
+import QuillToolbar, { formats, modules } from "../../widgets/QuiilToolbar";
+import { MdDelete } from "react-icons/md";
 
-const Options = ({ questionToEdit, handleOptionChange }) => {
+const Options = ({
+  questionToEdit,
+  handleOptionChange,
+  handleDeleteOption,
+}) => {
   return (
     <Flex direction="column" fontSize="sm" gap={4}>
-      {questionToEdit.id
-        ? questionToEdit.options.map((option) => (
-            <Flex key={option.label} gap={4} alignItems="center">
-              <span className="font-bold w-6">{option.label}:</span>
-              <Input
-                size={"sm"}
-                value={option.text}
-                onChange={(e) =>
-                  handleOptionChange(option.label, e.target.value)
-                }
-              />
-            </Flex>
-          ))
-        : questionToEdit.options.map((option) => (
-            <Flex key={option.label} gap={4} alignItems={"center"}>
-              <span className="font-bold w-6">{option.label}:</span>
-              <Input
-                size={"sm"}
-                value={option.text}
-                onChange={(e) =>
-                  handleOptionChange(option.label, e.target.value)
-                }
-              />
-            </Flex>
-          ))}
+      {questionToEdit.options.map((option) => (
+        <Flex key={option.label} gap={4} alignItems="center">
+          <span className="font-bold w-6">{option.label}:</span>
+          <Input
+            size={"sm"}
+            value={option.text}
+            onChange={(e) => handleOptionChange(option.label, e.target.value)}
+          />
+          <Button
+            size="xs"
+            colorScheme="red"
+            variant={"outline"}
+            leftIcon={<MdDelete />}
+            iconSpacing={"0"}
+            onClick={() => handleDeleteOption(option.label)}
+          ></Button>
+        </Flex>
+      ))}
     </Flex>
   );
 };
@@ -51,6 +51,8 @@ export default function WritePage({
   setQuestions,
   newQuestion,
   setNewQuestion,
+  handleQuestionDelete,
+  handleNewQuestion,
 }) {
   // const [questions, setQuestions] = useState([]);
   const { questionIndex } = useParams();
@@ -149,26 +151,36 @@ export default function WritePage({
     setNewQuestion({ ...newQuestion, options: updatedOptions });
   }
 
-  const toolbarOptions = [
-    ["bold", "italic", "underline", "strike"], // toggled buttons
-    ["blockquote", "code-block"],
+  const handleAddOption = () => {
+    const newOptionLabel = String.fromCharCode(97 + newQuestion.options.length); // Generate labels 'a', 'b', 'c', ...
+    const newOption = { label: newOptionLabel, text: "" };
 
-    [{ "header": 1 }, { "header": 2 }], // custom button values
-    [{ "list": "ordered" }, { "list": "bullet" }],
-    [{ "script": "sub" }, { "script": "super" }], // superscript/subscript
+    // Create a copy of the options array and add the new option
+    const updatedOptions = [...newQuestion.options, newOption];
 
-    [{ "size": ["small", false, "large", "huge"] }], // custom dropdown
+    // Update the questionToEdit with the new options
+    setNewQuestion({
+      ...newQuestion,
+      options: updatedOptions,
+    });
+  };
+  const handleDeleteOption = (optionLabel) => {
+    // Filter out the option with the specified label
+    const updatedOptions = newQuestion.options.filter(
+      (option) => option.label !== optionLabel
+    );
 
-    [{ "color": [] }, { "background": [] }], // dropdown with defaults from theme
-    [{ "font": [] }],
-    [{ "align": [] }],
+    // Reassign labels to the remaining options
+    updatedOptions.forEach((option, index) => {
+      option.label = String.fromCharCode(97 + index); // Assign letters 'a', 'b', 'c', ...
+    });
 
-    ["link", "image"],
-
-    ["clean"], // remove formatting button
-  ];
-  const module = { toolbar: toolbarOptions };
-
+    // Update the newQuestion with the updated options
+    setNewQuestion({
+      ...newQuestion,
+      options: updatedOptions,
+    });
+  };
   const examDetails = {
     session: subject.session,
     term: subject.term,
@@ -182,35 +194,61 @@ export default function WritePage({
 
   return (
     <Flex gap={4} color={"neutral.900"}>
-      <Box>
+      <Box w={"full"}>
         <Box mt={0} px={6} py={4} bg={"white"} rounded={"lg"}>
-          <Text as={"h2"} fontWeight={"bold"} mb={4}>
-            QUESTION {viewIndex}:
-          </Text>{" "}
+          <Flex alignItems={"center"} mb={4} justifyContent={"space-between"}>
+            <Text as={"h2"} fontWeight={"bold"}>
+              QUESTION {viewIndex}:
+            </Text>
+
+            <Button
+              size="xs"
+              colorScheme="red"
+              variant={"outline"}
+              leftIcon={<MdDelete />}
+              iconSpacing={"0"}
+              onClick={handleQuestionDelete}
+            ></Button>
+          </Flex>
+          <QuillToolbar toolbarId={"t1"} />
           <ReactQuill
             theme="snow"
             value={newQuestion.question}
             onChange={handleNewQuestionChange}
-            modules={module}
             className="h-full"
+            modules={modules("t1")}
+            formats={formats}
           />
         </Box>
 
         <Box my={4} px={6} py={4} bg={"white"} rounded={"lg"} w={"full"}>
+          <Flex fontSize={"xs"} mb={6} alignItems={"center"}>
+            <Flex>
+              Mode:&nbsp;
+              <Text as={"span"} fontWeight={"bold"} color={"accent.700"}>
+                Options
+              </Text>
+            </Flex>
+
+            <Button
+              display={"flex"}
+              ml={"auto"}
+              colorScheme="purple"
+              size={"xs"}
+              w={"max-content"}
+              leftIcon={<FaPlus />}
+              onClick={handleAddOption}
+            >
+              Add Option
+            </Button>
+          </Flex>
+
           <Options
             handleOptionChange={handleNewOptionChange}
             questionToEdit={newQuestion}
+            handleAddOption={handleAddOption}
+            handleDeleteOption={handleDeleteOption}
           />
-          <Button
-            mt={6}
-            colorScheme="purple"
-            size={"xs"}
-            w={"max-content"}
-            variant={"outline"}
-            leftIcon={<FaPlus />}
-          >
-            Add Option
-          </Button>
         </Box>
 
         <Flex w={"full"} justifyContent={"space-between"} gap={4} my={2}>
@@ -240,18 +278,27 @@ export default function WritePage({
           </Box>
         </Flex>
 
-        <Flex justifyContent={"space-between"} gap={4}>
-          <NumberedQuestionList
-            questions={questions}
-            currentQuestionIndex={currentQuestionIndex}
-            navigateToQuestion={navigateToQuestion}
-          />
-
+        <Flex justifyContent={"space-between"} gap={4} mt={6}>
           <Button
-            mt={6}
+            colorScheme="blue"
+            // bg={"brand.900"}
+            rounded={"sm"}
+            size={"sm"}
+            w={"max-content"}
+            variant={"outline"}
+            display={"flex"}
+            alignItems={"center"}
+            leftIcon={<FaPlus />}
+            onClick={handleNewQuestion}
+            color={"brand.900"}
+            borderColor={"brand.900"}
+          >
+            New Question
+          </Button>
+          <Button
             colorScheme="red"
             // bg={"brand.900"}
-            rounded={"none"}
+            rounded={"md"}
             size={"sm"}
             w={"max-content"}
             display={"flex"}
@@ -315,11 +362,13 @@ export default function WritePage({
               fontWeight={"semibold"}
               textTransform={"uppercase"}
             >
-              Accumulated total marks
+              Total Questions:
             </Text>
-            <Text as={"p"} mb={3} fontSize={"sm"} textTransform={"uppercase"}>
-              {ctq}
-            </Text>
+            <NumberedQuestionList
+              questions={questions}
+              currentQuestionIndex={currentQuestionIndex}
+              navigateToQuestion={navigateToQuestion}
+            />
           </Box>{" "}
           <Box
             px={4}
@@ -337,10 +386,10 @@ export default function WritePage({
               fontWeight={"semibold"}
               textTransform={"uppercase"}
             >
-              Total Questions:
+              Total Allloted Marks
             </Text>
-            <Text as={"p"} mb={3} fontSize={"sm"} textTransform={"uppercase"}>
-              {questions.length}
+            <Text as={"p"} mb={2} fontSize={"md"} textTransform={"uppercase"}>
+              {`${ctq} marks`}
             </Text>
           </Box>{" "}
         </Flex>

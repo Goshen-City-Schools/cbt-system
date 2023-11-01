@@ -50,6 +50,8 @@ export default function CreateExamQuestionsPage() {
           setQuestions={setQuestions}
           newQuestion={newQuestion}
           setNewQuestion={setNewQuestion}
+          handleQuestionDelete={handleQuestionDelete}
+          handleNewQuestion={handleNewQuestion}
         />
       ),
     },
@@ -71,7 +73,7 @@ export default function CreateExamQuestionsPage() {
     setActiveTab(tabId);
   };
 
-  const handleNewQuestion = () => {
+  function handleNewQuestion() {
     // Calculate the index for the new question
     const newQuestionIndex = questions.length;
 
@@ -98,7 +100,7 @@ export default function CreateExamQuestionsPage() {
 
     // Navigate to the new question
     navigate(`/admin/exams/${subjectExamId}/${newQuestionIndex}`);
-  };
+  }
 
   function handleQuestionDelete() {
     if (questions.length > 0) {
@@ -140,22 +142,6 @@ export default function CreateExamQuestionsPage() {
           onTabClick={handleTabClick}
         />
 
-        <Button
-          colorScheme="blue"
-          // bg={"brand.900"}
-          rounded={"sm"}
-          size={"sm"}
-          w={"max-content"}
-          variant={"outline"}
-          display={"flex"}
-          alignItems={"center"}
-          lefttIcon={<FaPlus />}
-          onClick={handleNewQuestion}
-          color={"brand.900"}
-          borderColor={"brand.900"}
-        >
-          new Question
-        </Button>
         <IconComponent click={handleQuestionDelete}>
           <FaRecycle />
         </IconComponent>

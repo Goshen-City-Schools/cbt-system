@@ -12,3 +12,24 @@ main {
   overflow-x: hidden;
   background-color: #f1f3f9;
 }
+
+.ql-container {
+  min-height: 10rem;
+  height: 100%;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  font-family: "Open Sans", sans-serif;
+  font-size: 1rem;
+}
+
+.ql-editor {
+  height: 100%;
+  flex: 1;
+  overflow-y: auto;
+  width: 100%;
+}
+
+.ql-editor img {
+  width: 100px;
+}

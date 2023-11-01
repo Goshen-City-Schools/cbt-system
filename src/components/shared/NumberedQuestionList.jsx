@@ -1,22 +1,26 @@
 /* eslint-disable react/prop-types */
 
+import { Button, Flex } from "@chakra-ui/react";
+
 function NumberedQuestionList({
   questions,
   currentQuestionIndex,
   navigateToQuestion,
 }) {
   return (
-    <div className="question-list">
+    <Flex className="question-list" gap={2}>
       {questions.map((question, index) => (
-        <button
+        <Button
+          colorScheme="blue"
+          size={"xs"}
           key={index}
           onClick={() => navigateToQuestion(index)}
           className={currentQuestionIndex === index ? "active" : ""}
         >
           {index + 1}
-        </button>
+        </Button>
       ))}
-    </div>
+    </Flex>
   );
 }
 
