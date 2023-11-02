@@ -25,7 +25,6 @@ export default function Header() {
   const handleLogout = () => {
     // Dispatch the logout action when the "Logout" button is clicked
     dispatch(logout());
-    console.log("m");
     setTimeout(() => {
       navigate("/auth");
     }, 1000); // Adjust the delay as needed

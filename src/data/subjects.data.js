@@ -1,5 +1,10 @@
 const subjectsData = [
-  { name: "Mathematics" },
+  {
+    id: "",
+    name: "Mathematics",
+    shortName: "",
+    schoolClasses: [],
+  },
   { name: "English Language" },
   { name: "Physics" },
   { name: "Chemistry" },

@@ -1,22 +1,31 @@
 /* eslint-disable react/prop-types */
 import { Box, Flex, Text, Grid } from "@chakra-ui/react";
 import loadExamQuestions from "../utilities/loadExamQuestions";
+import "katex/dist/katex.min.css";
+import Latex from "react-latex-next";
 
-function QuestionBox({ question, options, index }) {
+function QuestionBox({ subject, question, options, index }) {
+  const setSubject = (subject) => {
+    if (
+      subject == "Mathematics" ||
+      subject == "Physics" ||
+      subject == "Chemistry"
+    ) {
+      return 1;
+    } else return 0;
+  };
   return (
     <Flex direction={"column"} gap={2}>
       <Text as={"p"} fontWeight={"bold"} display={"flex"}>
         {index}.&nbsp;
-        <span dangerouslySetInnerHTML={{ __html: question }} />
+        {setSubject(subject) ? (
+          <div>
+            <Latex>{question}</Latex>
+          </div>
+        ) : (
+          <span dangerouslySetInnerHTML={{ __html: question }} />
+        )}
       </Text>
-
-      {/* Question writeup */}
-      {/* <Box mt={1}>
-        <Text as={"p"}>
-          Lorem ipsum dolor sit amet consectetur adipisicing elit. Vero
-          reiciendis earum eius nemo! Soluta, nesciunt!{" "}
-        </Text>
-      </Box> */}
 
       {/* Options */}
       <Flex direction={"column"} gap={2} fontSize={"sm"} mt={1}>
@@ -33,7 +42,14 @@ function QuestionBox({ question, options, index }) {
             >
               <span className="text-xs">{option.name}</span>
             </Grid>
-            <Text as={"p"}>{option.text}</Text>
+            <Text as={"p"}>
+              {" "}
+              {setSubject(subject) ? (
+                <Latex>{option.text}</Latex>
+              ) : (
+                <>{option.text}</>
+              )}
+            </Text>
           </Flex>
         ))}
       </Flex>
@@ -42,13 +58,14 @@ function QuestionBox({ question, options, index }) {
 }
 
 // eslint-disable-next-line no-unused-vars
-export default function ExamPreviewScreen({ subjectExamId }) {
+export default function ExamPreviewScreen({ subjectExamId, subject }) {
   const examQuestions = loadExamQuestions(subjectExamId);
   return (
     <Box p={4} bg={"white"} rounded={"lg"}>
       <Flex direction={"column"} gap={8}>
         {examQuestions.map((question, index) => (
           <QuestionBox
+            subject={subject.subject}
             key={index}
             question={question.question}
             options={question.options}

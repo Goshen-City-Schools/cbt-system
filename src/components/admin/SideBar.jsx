@@ -12,11 +12,9 @@ import { FaTimes } from "react-icons/fa";
 import { PiGraduationCapLight } from "react-icons/pi";
 import { TbSchool, TbCloudDownload } from "react-icons/tb";
 import { VscSync } from "react-icons/vsc";
-// import { useCBT } from "../../contexts/CBTContext";
 
 export default function AdminSideBar() {
   const dispatch = useDispatch();
-  // const { state } = useCBT();
 
   const isSideMenuOpen = useSelector((state) => state.menu.isSideMenuOpen);
 
@@ -92,7 +90,7 @@ export default function AdminSideBar() {
           <NavItemComponent
             submenu={[
               { name: "Set Questions", link: "/admin/exams/new" },
-              { name: "Edit Questions", link: "/admin/exams" },
+              { name: "View Questions", link: "/admin/exams" },
             ]}
           >
             <IconComponent>
@@ -103,7 +101,7 @@ export default function AdminSideBar() {
           <NavItemComponent
             submenu={[
               { name: "Set Questions", link: "/admin/exams/new" },
-              { name: "Edit Questions", link: "/admin/exams" },
+              { name: "View Questions", link: "/admin/exams" },
             ]}
           >
             <IconComponent>

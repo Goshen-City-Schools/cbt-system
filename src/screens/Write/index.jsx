@@ -84,9 +84,7 @@ export default function WritePage({
   const isMounted = useRef(true);
 
   useEffect(() => {
-    console.log("Loading questions...");
     const loadedQuestions = loadExamQuestions(subjectExamId);
-    console.log("Loaded questions:", loadedQuestions);
     setQuestions(loadedQuestions);
     setCTQ(calculateTotalAllottedMarks(questions));
 
@@ -183,12 +181,10 @@ export default function WritePage({
     const totalAllottedMarks = calculateTotalAllottedMarks(updatedQuestions);
 
     // Debugging: Inspect updatedQuestions before and after setting state.
-    console.log("Updated Questions Before Set State:", updatedQuestions);
     setCTQ(totalAllottedMarks);
     setQuestions(updatedQuestions);
 
     // Debugging: Confirm that the state has been updated.
-    console.log("Updated Questions After Set State:", questions);
 
     // Check if any errors occur while saving.
     try {
@@ -198,7 +194,6 @@ export default function WritePage({
     }
 
     // Debugging: Confirm that the state has been updated.
-    console.log("Questions After Saving:", questions);
 
     // Reset the newQuestion state to the initial state after saving
     setNewQuestion(initialNewQuestion);

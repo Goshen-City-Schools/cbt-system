@@ -2,13 +2,13 @@
 
 import { Flex, Text } from "@chakra-ui/react";
 
-export default function PageSectionHeader({ pageTitle, pageCrumb }) {
+export default function PageSectionHeader({ pageTitle, pageCrumb, className }) {
   return (
     <Flex
       justifyContent={"space-between"}
       alignItems={"center"}
       mb={2}
-      className="no-print"
+      className={`no-print ${className}`}
     >
       <Text
         as={"h2"}

@@ -10,13 +10,13 @@ import {
 } from "@chakra-ui/react";
 import PageWrapper from "../components/shared/PageWrapper";
 
-import schoolDataOptions from "../data/schoolDataOptions";
 import PageSectionHeader from "../components/shared/PageSectionHeader";
 import { useNavigate } from "react-router-dom";
 import CustomTimePicker from "../components/shared/CustomTimePicker";
 import generateId from "../utilities/generateId";
 import { MdKeyboard, MdUpload } from "react-icons/md";
-import subjectsData from "../data/subjects.data";
+import DisplaySubjectsOptions from "../utilities/DisplaySubjectsOptions";
+import DisplaySchoolClassesOptions from "../utilities/DisplaySchoolClassesOptions";
 
 function ExamSetup() {
   const navigate = useNavigate();
@@ -130,128 +130,116 @@ function ExamSetup() {
     }
   };
 
-  const sortedSubjects = subjectsData.sort((a, b) =>
-    a.name.localeCompare(b.name)
-  );
-
   return (
     <PageWrapper>
-      {" "}
       <PageSectionHeader
         pageTitle={"New Exam Setup"}
         pageCrumb={"Home / Exams / New"}
       />
-      <Box w={"full"} mt={8} shadow={"sm"} maxW={"2xl"} mx={"auto"}>
+      <Box w={"full"} mt={8} maxW={"2xl"} shadow={"sm"} mx={"auto"}>
         <form
-          className="flex rounded-lg px-8 bg-white py-6 flex-col gap-4"
+          className="rounded-lg px-8 bg-white py-6 flex-col "
           onSubmit={handleSubmit}
         >
-          <FormControl id="class">
-            <FormLabel fontWeight={"bold"} fontSize={"sm"}>
-              Class
-            </FormLabel>
-            <Select
-              name="class"
-              size={"sm"}
-              value={formData.class}
-              onChange={handleChange}
-            >
-              <option value="">__ -- __</option>
+          <div className="grid grid-cols-2 gap-x-6 gap-y-8">
+            <FormControl id="class">
+              <FormLabel fontWeight={"bold"} fontSize={"sm"}>
+                Class
+              </FormLabel>
+              <DisplaySchoolClassesOptions
+                name="class"
+                size={"sm"}
+                value={formData.class}
+                onChange={handleChange}
+              />
+            </FormControl>
 
-              {schoolDataOptions.classesOption.map((schoolClass, index) => (
-                <option key={index} value={schoolClass}>
-                  {schoolClass}
-                </option>
-              ))}
-            </Select>{" "}
-          </FormControl>
+            <FormControl id="subject">
+              <FormLabel fontWeight={"bold"} fontSize={"sm"}>
+                Subject
+              </FormLabel>
+              <DisplaySubjectsOptions
+                name="subject"
+                value={formData.subject}
+                onChange={handleChange}
+                size={"sm"}
+              />
+            </FormControl>
 
-          <FormControl id="subject">
-            <FormLabel fontWeight={"bold"} fontSize={"sm"}>
-              Subject
-            </FormLabel>
-            <Select
-              name="subject"
-              value={formData.subject}
-              onChange={handleChange}
-              size={"sm"}
-            >
-              <option value="">__ -- __</option>
-              {sortedSubjects.map((subject, index) => (
-                <option key={index} value={subject.name}>
-                  {subject.name}
-                </option>
-              ))}
-              {/* Add more options */}
-            </Select>
-          </FormControl>
+            <FormControl id="date">
+              <FormLabel fontWeight={"bold"} fontSize={"sm"}>
+                Date
+              </FormLabel>
+              <Input
+                type="date"
+                name="date"
+                value={formData.date}
+                onChange={handleChange}
+              />
+            </FormControl>
 
-          <FormControl id="date">
-            <FormLabel fontWeight={"bold"} fontSize={"sm"}>
-              Date
-            </FormLabel>
-            <Input
-              type="date"
-              name="date"
-              value={formData.date}
-              onChange={handleChange}
-            />
-          </FormControl>
+            <FormControl id="time">
+              <FormLabel fontWeight={"bold"} fontSize={"sm"}>
+                Time
+              </FormLabel>
+              <CustomTimePicker
+                selectedTime={formData.time}
+                onChange={handleChange}
+              />
 
-          <FormControl id="time">
-            <FormLabel fontWeight={"bold"} fontSize={"sm"}>
-              Time
-            </FormLabel>
-            <CustomTimePicker
-              selectedTime={formData.time}
-              onChange={handleChange}
-            />
-
-            {/* <Input
+              {/* <Input
               type="time"
               name="time"
               size={"sm"}
               value={formData.time}
               onChange={handleChange}
             /> */}
-          </FormControl>
-          <FormControl id="duration">
-            <FormLabel fontWeight={"bold"} fontSize={"sm"}>
-              Duration
-            </FormLabel>
-            <Select
-              size={"sm"}
-              name="duration"
-              value={formData.duration}
-              onChange={handleDurationChange}
-            >
-              <option value="">__ -- __</option>
+            </FormControl>
 
-              <option value="30mins">30 minutes</option>
-              <option value="1hr">1 hour</option>
-              <option value="45mins">45 minutes</option>
-              {/* Add more options as needed */}
-            </Select>
-          </FormControl>
+            <FormControl id="duration">
+              <FormLabel fontWeight={"bold"} fontSize={"sm"}>
+                Duration
+              </FormLabel>
+              <Select
+                size={"sm"}
+                name="duration"
+                value={formData.duration}
+                onChange={handleDurationChange}
+              >
+                <option value="">__ -- __</option>
 
-          <FormControl id="date">
-            <FormLabel fontWeight={"bold"} fontSize={"sm"}>
-              Exam Marks
-            </FormLabel>
-            <Input
-              type="number"
-              name="examMarks"
-              defaultValue={60}
-              value={formData.examMarks}
-              onChange={handleChange}
-            />
-          </FormControl>
-          <Flex gap={4} justifyContent={"space-between"}>
+                <option value="30mins">30 minutes</option>
+                <option value="1hr">1 hour</option>
+                <option value="45mins">45 minutes</option>
+                {/* Add more options as needed */}
+              </Select>
+            </FormControl>
+
+            <FormControl id="date">
+              <FormLabel fontWeight={"bold"} fontSize={"sm"}>
+                Exam Marks
+              </FormLabel>
+              <Input
+                type="number"
+                name="examMarks"
+                defaultValue={60}
+                value={formData.examMarks}
+                onChange={handleChange}
+              />
+            </FormControl>
+          </div>
+          <Flex
+            direction={"column"}
+            gap={4}
+            w={"full"}
+            justifyContent={"space-between"}
+          >
             <Button
+              w={"full"}
               id="upload"
               leftIcon={<MdUpload />}
               size={"sm"}
-              mt={4}
+              mt={8}
               colorScheme="teal"
               type="button"
               onClick={handleUploadQuestions}
@@ -259,9 +247,9 @@ function ExamSetup() {
               Upload Questions
             </Button>
             <Button
+              w={"full"}
               leftIcon={<MdKeyboard />}
               size={"sm"}
-              mt={4}
               variant={"outline"}
               colorScheme="teal"
               type="submit"

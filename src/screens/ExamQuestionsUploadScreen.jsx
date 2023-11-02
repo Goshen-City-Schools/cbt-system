@@ -4,9 +4,10 @@ import useExcelReader from "../hooks/useExcelReader";
 import { Button } from "@chakra-ui/react";
 import { useParams } from "react-router-dom";
 
-import { Flex, Box, Text } from "@chakra-ui/react";
+import { Flex, Box, Text, Input } from "@chakra-ui/react";
 import PageWrapper from "../components/shared/PageWrapper";
 import PageSectionHeader from "../components/shared/PageSectionHeader";
+import { useNavigate } from "react-router-dom";
 
 const ExamQuestionsUploadScreen = () => {
   const { subjectExamId } = useParams();
@@ -15,6 +16,8 @@ const ExamQuestionsUploadScreen = () => {
   const [subjectExamQuestions, setSubjectExamQuestions] = useState([]);
   const [allottedMark, setAllottedMark] = useState(1);
   const [examDetails, setExamDetails] = useState(null);
+
+  const navigate = useNavigate();
 
   useEffect(() => {
     if (excelData) {
@@ -64,17 +67,31 @@ const ExamQuestionsUploadScreen = () => {
     const examQuestionsData =
       JSON.parse(localStorage.getItem("examQuestions")) || {};
 
-    if (!examQuestionsData[subjectExamId]) {
-      examQuestionsData[subjectExamId] = {
-        subjectExamId,
-        questions: [],
-      };
+    if (examQuestionsData[subjectExamId]) {
+      if (
+        window.confirm(
+          "Exam questions already exists. Do you want to override?"
+        )
+      ) {
+        return (examQuestionsData[subjectExamId] = {
+          subjectExamId,
+          questions: [],
+        });
+      } else
+        return navigate(
+          `/admin/exams/${subjectExamId}/${subjectExamQuestions.length}`
+        );
     }
 
+    examQuestionsData[subjectExamId] = {
+      subjectExamId,
+      questions: [],
+    };
     // Add the uploaded questions to the subjectexamid
     examQuestionsData[subjectExamId].questions.push(...subjectExamQuestions);
 
     // Set allotted marks for each question
+
     examQuestionsData[subjectExamId].questions = examQuestionsData[
       subjectExamId
     ].questions.map((question) => ({
@@ -84,6 +101,8 @@ const ExamQuestionsUploadScreen = () => {
 
     localStorage.setItem("examQuestions", JSON.stringify(examQuestionsData));
 
+    navigate(`/admin/exams/${subjectExamId}/${subjectExamQuestions.length}`);
+
     alert("Questions uploaded successfully!");
   };
 
@@ -91,33 +110,33 @@ const ExamQuestionsUploadScreen = () => {
     setSubjectExamQuestions([]);
     setAllottedMark(1);
     handleFileChange(null);
-
-    console.log(excelData);
   };
 
   return (
     <PageWrapper>
-      {!excelData && (
-        <>
-          <PageSectionHeader
-            pageTitle={"Upload Questions"}
-            pageCrumb={`Home / Upload `}
-          />
-          <input type="file" accept=".xlsx" onChange={handleFileUpload} />
-        </>
-      )}
+      <PageSectionHeader
+        className={"mb-8"}
+        pageTitle={"Upload Questions"}
+        pageCrumb={`Home / Upload / ${examDetails && examDetails?.subject}  `}
+      />
 
-      {subjectExamQuestions.length > 0 && examDetails && (
-        <>
-          <PageSectionHeader
-            pageTitle={"Upload Questions"}
-            pageCrumb={`Home / Upload / ${examDetails.subject}`}
+      <Flex gap={4} color={"neutral.900"}>
+        {!excelData && (
+          <Input
+            type="file"
+            className={"mt-10"}
+            accept=".xls"
+            onChange={handleFileUpload}
           />
-          <Flex gap={4} color={"neutral.900"}>
+        )}
+        {examDetails && (
+          <>
             <Box w={"full"} fontSize={"sm"}>
-              <pre className="whitespace-pre-wrap">
-                {JSON.stringify(subjectExamQuestions, null, 2)}
-              </pre>
+              {subjectExamQuestions.length > 0 && (
+                <pre className="whitespace-pre-wrap">
+                  {JSON.stringify(subjectExamQuestions, null, 2)}
+                </pre>
+              )}
             </Box>
 
             <Box
@@ -153,43 +172,36 @@ const ExamQuestionsUploadScreen = () => {
                       </Text>
                     </Flex>
                   ))}
-                  <input
-                    type="text"
-                    placeholder="Subject Exam ID"
-                    value={subjectExamId}
-                    readOnly
-                  />
-                  <input
-                    type="number"
-                    placeholder="Allotted Mark"
-                    value={allottedMark}
-                    onChange={(e) => setAllottedMark(e.target.value)}
-                  />
-                  <Button
-                    leftIcon={<MdUpload />}
-                    size={"sm"}
-                    mt={4}
-                    colorScheme="teal"
-                    onClick={handleQuestionUpload}
-                    type="button"
-                  >
-                    Upload Questions
-                  </Button>
-                  <Button
-                    size={"sm"}
-                    mt={2}
-                    colorScheme="red"
-                    onClick={handleDeleteQuestions}
-                    type="button"
-                  >
-                    Delete Questions
-                  </Button>
-                </Flex>{" "}
+
+                  {subjectExamQuestions.length > 0 && (
+                    <>
+                      <Button
+                        leftIcon={<MdUpload />}
+                        size={"sm"}
+                        mt={4}
+                        colorScheme="teal"
+                        onClick={handleQuestionUpload}
+                        type="button"
+                      >
+                        Upload Questions
+                      </Button>
+                      <Button
+                        size={"sm"}
+                        mt={2}
+                        colorScheme="red"
+                        onClick={handleDeleteQuestions}
+                        type="button"
+                      >
+                        Delete Questions
+                      </Button>
+                    </>
+                  )}
+                </Flex>
               </Box>
             </Box>
-          </Flex>
-        </>
-      )}
+          </>
+        )}
+      </Flex>
     </PageWrapper>
   );
 };

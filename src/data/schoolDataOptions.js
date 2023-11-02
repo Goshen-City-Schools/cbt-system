@@ -5,7 +5,8 @@ const termOptions = [
   { name: "term2", text: "Second Term" },
   { name: "term3", text: "Third Term" },
 ];
-const classesOption = [
+
+const classes = [
   "Reception 1",
   "Reception 2",
   "Nursery 1",
@@ -24,4 +25,53 @@ const classesOption = [
   "SSS 3",
 ];
 
-export default { sessionOptions, classesOption, termOptions };
+const subjects = [
+  {
+    id: "",
+    name: "Mathematics",
+    shortName: "",
+    schoolClasses: [],
+  },
+  { name: "English Language" },
+  { name: "Physics" },
+  { name: "Chemistry" },
+  { name: "Biology" },
+  { name: "Social Studies" },
+  { name: "History" },
+  { name: "Geography" },
+  { name: "Physical Education" },
+  { name: "Computer Science" },
+  { name: "French" },
+  { name: "Literature" },
+  { name: "Art" },
+  { name: "Music" },
+  { name: "Religious Education" },
+  { name: "Civic Education" },
+  { name: "Economics" },
+  { name: "Business Studies" },
+  { name: "Home Economics" },
+  { name: "Agriculture" },
+  { name: "Technical Drawing" },
+  { name: "Health Education" },
+  { name: "Government" },
+  { name: "Commerce" },
+  { name: "Information and Communication Technology (ICT)" },
+  { name: "Physical Science" },
+  { name: "Environmental Science" },
+  { name: "Ethics and Religious Studies" },
+  { name: "Creative Arts" },
+  { name: "Design and Technology" },
+  { name: "Social Sciences" },
+  { name: "Psychology" },
+  { name: "Sociology" },
+  { name: "Environmental Management" },
+  { name: "Food and Nutrition" },
+  { name: "Further Mathematics" },
+  { name: "Technical Education" },
+  { name: "Yoruba Language (or other regional languages)" },
+  { name: "Igbo Language" },
+  { name: "Fine Arts" },
+  { name: "Drama" },
+];
+
+export default { sessionOptions, classes, termOptions, subjects };

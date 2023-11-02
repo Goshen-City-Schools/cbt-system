@@ -15,9 +15,8 @@ export default function CreateExamQuestionsPage() {
   const { subjectExamId } = useParams(); // Get the examId from the URL
 
   const examsData = useExamsData();
-
   const subjectExam = examsData.find(
-    (subjectExam) => subjectExam.id === subjectExamId
+    (subjectExam) => subjectExam.id == subjectExamId
   );
 
   const [questions, setQuestions] = useState([]); // State to manage questions
@@ -40,7 +39,12 @@ export default function CreateExamQuestionsPage() {
       id: 2,
       label: "Preview",
       link: `/admin/exams/${subjectExamId}/preview`,
-      component: <ExamPreviewScreen subjectExamId={subjectExamId} />,
+      component: (
+        <ExamPreviewScreen
+          subjectExamId={subjectExamId}
+          subject={subjectExam}
+        />
+      ),
     },
     {
       id: 3,
