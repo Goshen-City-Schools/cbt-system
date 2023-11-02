@@ -111,7 +111,7 @@ function ExamTable() {
   ];
 
   return (
-    <Box bg={"white"} p={6} mt={8}>
+    <Box bg={"white"} p={6} mt={8} shadow={"xs"} rounded={"lg"}>
       <DataTable data={examsData} columns={columns} />
     </Box>
   );

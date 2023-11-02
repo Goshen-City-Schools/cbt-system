@@ -6,6 +6,7 @@ import {
   Input,
   Select,
   Button,
+  Flex,
 } from "@chakra-ui/react";
 import PageWrapper from "../components/shared/PageWrapper";
 
@@ -14,14 +15,14 @@ import PageSectionHeader from "../components/shared/PageSectionHeader";
 import { useNavigate } from "react-router-dom";
 import CustomTimePicker from "../components/shared/CustomTimePicker";
 import generateId from "../utilities/generateId";
+import { MdKeyboard, MdUpload } from "react-icons/md";
+import subjectsData from "../data/subjects.data";
 
 function ExamSetup() {
   const navigate = useNavigate();
   const [formData, setFormData] = useState({
     id: "",
     subject: "",
-    session: "",
-    term: "",
     class: "",
     date: "",
     time: "",
@@ -51,20 +52,18 @@ function ExamSetup() {
     setFormData({ ...formData, duration: e.target.value });
   };
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    // Check if all required fields are set
+  const handleUploadQuestions = () => {
+    // Add validation if needed
     if (
-      formData.subject &&
-      formData.session &&
-      formData.term &&
-      formData.class &&
-      formData.date &&
-      formData.time &&
-      formData.duration &&
-      formData.examMarks
+      !formData.subject ||
+      !formData.class ||
+      !formData.date ||
+      !formData.time ||
+      !formData.duration ||
+      !formData.examMarks
     ) {
-      // Create a new object with only the relevant form data
+      alert("Please fill in all required fields before submitting.");
+    } else {
       const examsData = {
         id: generateId(),
         subject: formData.subject,
@@ -78,7 +77,8 @@ function ExamSetup() {
       };
 
       // Retrieve the existing exam data from localStorage (if any)
-      const existingExamsData = JSON.parse(localStorage.getItem("examsData"));
+      const existingExamsData =
+        JSON.parse(localStorage.getItem("examsData")) || [];
 
       // Add the new exam data to the array
       const newExamsData = [...existingExamsData, examsData];
@@ -86,12 +86,53 @@ function ExamSetup() {
       // Store the updated array in localStorage
       localStorage.setItem("examsData", JSON.stringify(newExamsData));
 
-      navigate(`/admin/exams/${examsData.id}`);
-    } else {
-      // Display an error message or take appropriate action
-      alert("Please fill in all required fields before submitting.");
+      // Redirect to the upload page
+      navigate(`/admin/exams/${examsData.id}/upload`);
     }
   };
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    if (
+      !formData.subject ||
+      !formData.class ||
+      !formData.date ||
+      !formData.time ||
+      !formData.duration ||
+      !formData.examMarks
+    ) {
+      alert("Please fill in all required fields before submitting.");
+    } else {
+      const examsData = {
+        id: generateId(),
+        subject: formData.subject,
+        session: formData.session,
+        term: formData.term,
+        class: formData.class,
+        date: formData.date,
+        time: formData.time,
+        duration: formData.duration,
+        examMarks: formData.examMarks,
+      };
+
+      // Retrieve the existing exam data from localStorage (if any)
+      const existingExamsData =
+        JSON.parse(localStorage.getItem("examsData")) || [];
+
+      // Add the new exam data to the array
+      const newExamsData = [...existingExamsData, examsData];
+
+      // Store the updated array in localStorage
+      localStorage.setItem("examsData", JSON.stringify(newExamsData));
+
+      // Redirect to the page for typing questions
+      navigate(`/admin/exams/${examsData.id}`);
+    }
+  };
+
+  const sortedSubjects = subjectsData.sort((a, b) =>
+    a.name.localeCompare(b.name)
+  );
 
   return (
     <PageWrapper>
@@ -136,52 +177,12 @@ function ExamSetup() {
               size={"sm"}
             >
               <option value="">__ -- __</option>
-              <option value="Math">Math</option>
-              <option value="Science">Science</option>
-              {/* Add more options */}
-            </Select>
-          </FormControl>
-
-          <FormControl id="session">
-            <FormLabel fontWeight={"bold"} fontSize={"sm"}>
-              Session
-            </FormLabel>
-
-            <Select
-              name="session"
-              value={formData.session}
-              onChange={handleChange}
-              size={"sm"}
-            >
-              <option value="">__ -- __</option>
-
-              {schoolDataOptions.sessionOptions.map((session, index) => (
-                <option key={index} value={session}>
-                  {session}
+              {sortedSubjects.map((subject, index) => (
+                <option key={index} value={subject.name}>
+                  {subject.name}
                 </option>
               ))}
-            </Select>
-          </FormControl>
-
-          <FormControl id="term">
-            <FormLabel fontWeight={"bold"} fontSize={"sm"}>
-              Term
-            </FormLabel>
-            <Select
-              name="term"
-              value={formData.term}
-              size={"sm"}
-              onChange={handleChange}
-            >
-              <option value="">__ -- __</option>
-
-              {schoolDataOptions.termOptions.map((term, index) => (
-                <>
-                  <option key={index} value={term.name}>
-                    {term.text}
-                  </option>
-                </>
-              ))}
+              {/* Add more options */}
             </Select>
           </FormControl>
 
@@ -245,10 +246,29 @@ function ExamSetup() {
               onChange={handleChange}
             />
           </FormControl>
-
-          <Button mt={4} colorScheme="teal" type="submit">
-            Set Exam Details
-          </Button>
+          <Flex gap={4} justifyContent={"space-between"}>
+            <Button
+              id="upload"
+              leftIcon={<MdUpload />}
+              size={"sm"}
+              mt={4}
+              colorScheme="teal"
+              type="button"
+              onClick={handleUploadQuestions}
+            >
+              Upload Questions
+            </Button>
+            <Button
+              leftIcon={<MdKeyboard />}
+              size={"sm"}
+              mt={4}
+              variant={"outline"}
+              colorScheme="teal"
+              type="submit"
+            >
+              Start typing
+            </Button>
+          </Flex>
         </form>
       </Box>
     </PageWrapper>

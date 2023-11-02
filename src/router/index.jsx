@@ -27,6 +27,7 @@ import SetNewTestPage from "../pages/admin/Assessments/New";
 import WritePage from "../screens/Write";
 import CreateExamQuestionsPage from "../pages/admin/Exams/Create";
 import ExamSetup from "../screens/ExamSetup";
+import ExamQuestionsUploadScreen from "../screens/ExamQuestionsUploadScreen";
 
 // Admin Pages
 
@@ -57,6 +58,7 @@ const router = createBrowserRouter(
             <Route path=":subjectExamId">
               <Route index element={<CreateExamQuestionsPage />} />
               <Route path="preview" element={<CreateExamQuestionsPage />} />
+              <Route path="upload" element={<ExamQuestionsUploadScreen />} />
               <Route path="settings" element={<CreateExamQuestionsPage />} />
               <Route
                 path=":questionIndex"

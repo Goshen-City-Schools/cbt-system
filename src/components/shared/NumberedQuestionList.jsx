@@ -8,7 +8,7 @@ function NumberedQuestionList({
   navigateToQuestion,
 }) {
   return (
-    <Flex className="question-list" gap={2}>
+    <Flex className="question-list" gap={2} wrap={"wrap"}>
       {questions.map((question, index) => (
         <Button
           colorScheme="blue"

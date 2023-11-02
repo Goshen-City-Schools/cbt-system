@@ -1,7 +1,6 @@
 import { Box, List, Text, Flex, Image } from "@chakra-ui/react";
 
 import { TbReport } from "react-icons/tb";
-import { BiEditAlt } from "react-icons/bi";
 
 import "./SideMenu.style.css";
 
@@ -10,6 +9,9 @@ import NavItemComponent from "../shared/NavItem.component";
 import { toggleSideMenu } from "../../redux/slices/menuSlice";
 import IconComponent from "../shared/Icon.component";
 import { FaTimes } from "react-icons/fa";
+import { PiGraduationCapLight } from "react-icons/pi";
+import { TbSchool, TbCloudDownload } from "react-icons/tb";
+import { VscSync } from "react-icons/vsc";
 // import { useCBT } from "../../contexts/CBTContext";
 
 export default function AdminSideBar() {
@@ -89,36 +91,29 @@ export default function AdminSideBar() {
         <List className="memuList">
           <NavItemComponent
             submenu={[
-              { name: "Type Questions", link: "/admin/exams/new" },
-              { name: "Upload Questions", link: "/admin/exams" },
+              { name: "Set Questions", link: "/admin/exams/new" },
+              { name: "Edit Questions", link: "/admin/exams" },
             ]}
           >
             <IconComponent>
-              <BiEditAlt size={18} />
+              <PiGraduationCapLight size={18} />
             </IconComponent>
-            Set Exam Questions
+            Exam Questions
           </NavItemComponent>
-          <NavItemComponent link={"/admin/assessments"}>
+          <NavItemComponent
+            submenu={[
+              { name: "Set Questions", link: "/admin/exams/new" },
+              { name: "Edit Questions", link: "/admin/exams" },
+            ]}
+          >
             <IconComponent>
-              <BiEditAlt size={18} />
+              <TbSchool size={18} />
             </IconComponent>
-            Set Test Questions
+            Test Questions
           </NavItemComponent>{" "}
-          <NavItemComponent link={"/admin/assessments/new"}>
-            <IconComponent>
-              <BiEditAlt size={18} />
-            </IconComponent>
-            Edit Test Questions
-          </NavItemComponent>
-          <NavItemComponent link={"/admin/exams/"}>
-            <IconComponent>
-              <BiEditAlt size={18} />
-            </IconComponent>
-            Edit Exam Questions
-          </NavItemComponent>
           <NavItemComponent link={"/admin/#"}>
             <IconComponent>
-              <TbReport size={18} />
+              <VscSync size={18} />
             </IconComponent>
             Sync Students Record
           </NavItemComponent>
@@ -130,7 +125,7 @@ export default function AdminSideBar() {
           </NavItemComponent>
           <NavItemComponent link={"/admin/results"}>
             <IconComponent>
-              <TbReport size={18} />
+              <TbCloudDownload size={18} />
             </IconComponent>
             Download Result
           </NavItemComponent>

@@ -3,14 +3,11 @@ import HorizontalScrollableTabs from "../../../components/shared/HorizontalScrol
 import PageWrapper from "../../../components/shared/PageWrapper";
 import WritePage from "../../../screens/Write";
 
-import { Box, Flex, Button } from "@chakra-ui/react";
+import { Box, Flex } from "@chakra-ui/react";
 import ExamPreviewScreen from "../../../screens/ExamPreviewScreen";
 import ExamSettingsScreen from "../../../screens/ExamSettingsScreen";
 import useExamsData from "../../../hooks/useExamsData";
 import { useNavigate, useParams } from "react-router-dom";
-import IconComponent from "../../../components/shared/Icon.component";
-import { FaPlus, FaRecycle } from "react-icons/fa";
-import saveExamQuestions from "../../../utilities/saveExamQuestions";
 
 export default function CreateExamQuestionsPage() {
   const [activeTab, setActiveTab] = useState(1);
@@ -22,20 +19,8 @@ export default function CreateExamQuestionsPage() {
   const subjectExam = examsData.find(
     (subjectExam) => subjectExam.id === subjectExamId
   );
-  const initialQuestion = {
-    question: "",
-    options: [
-      { label: "a", text: "" },
-      { label: "b", text: "" },
-      { label: "c", text: "" },
-      { label: "d", text: "" },
-    ],
-    correctOption: "a",
-    allotedMark: 5,
-  };
 
   const [questions, setQuestions] = useState([]); // State to manage questions
-  const [newQuestion, setNewQuestion] = useState(initialQuestion);
 
   const tabs = [
     {
@@ -48,10 +33,6 @@ export default function CreateExamQuestionsPage() {
           subjectExamId={subjectExamId}
           questions={questions}
           setQuestions={setQuestions}
-          newQuestion={newQuestion}
-          setNewQuestion={setNewQuestion}
-          handleQuestionDelete={handleQuestionDelete}
-          handleNewQuestion={handleNewQuestion}
         />
       ),
     },
@@ -73,54 +54,6 @@ export default function CreateExamQuestionsPage() {
     setActiveTab(tabId);
   };
 
-  function handleNewQuestion() {
-    // Calculate the index for the new question
-    const newQuestionIndex = questions.length;
-
-    // Save the current question before creating a new one
-    if (newQuestion.question.trim() === "") {
-      // Check if the question is empty
-      alert("Please enter a question before saving.");
-      return;
-    }
-
-    // Check if any option is empty
-    if (newQuestion.options.some((option) => option.text.trim() === "")) {
-      alert("Please fill in all options before saving.");
-      return;
-    }
-
-    const updatedQuestions = [...questions];
-    updatedQuestions.push(newQuestion);
-    setQuestions(updatedQuestions);
-
-    // Reset newQuestion state for the next new question
-    setNewQuestion(initialQuestion);
-    saveExamQuestions(updatedQuestions);
-
-    // Navigate to the new question
-    navigate(`/admin/exams/${subjectExamId}/${newQuestionIndex}`);
-  }
-
-  function handleQuestionDelete() {
-    if (questions.length > 0) {
-      if (
-        window.confirm("Are you sure you want to delete the current question?")
-      ) {
-        const deleteIndex = questions.length - 1;
-        const updatedQuestions = [...questions];
-        updatedQuestions.splice(deleteIndex, 1);
-        setQuestions(updatedQuestions);
-
-        // Update local storage to remove the deleted question
-        saveExamQuestions(subjectExamId, updatedQuestions);
-
-        const targetIndex = deleteIndex > 0 ? deleteIndex - 1 : 0;
-        navigate(`/admin/exams/${subjectExamId}/${targetIndex}`);
-      }
-    }
-  }
-
   if (!subjectExam) {
     // Redirect to "Page Not Found" if examId does not exist
     navigate("/admin/page-not-found"); // You should specify the correct URL for your "Page Not Found" page
@@ -141,10 +74,6 @@ export default function CreateExamQuestionsPage() {
           activeTab={activeTab}
           onTabClick={handleTabClick}
         />
-
-        <IconComponent click={handleQuestionDelete}>
-          <FaRecycle />
-        </IconComponent>
       </Flex>
 
       <Box py={2} rounded={"md"}>

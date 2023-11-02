@@ -10,7 +10,14 @@ export default function PageSectionHeader({ pageTitle, pageCrumb }) {
       mb={2}
       className="no-print"
     >
-      <Text as={"h2"} mt={0} className="" fontSize={"2xl"} fontWeight={"bold"}>
+      <Text
+        as={"h2"}
+        mt={0}
+        className=""
+        fontSize={"xl"}
+        color={"neutral.700"}
+        fontWeight={"bold"}
+      >
         {pageTitle}
       </Text>
       <Text as={"small"}>{pageCrumb}</Text>

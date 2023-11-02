@@ -1,6 +1,5 @@
-import { MdAdd, MdIcecream, MdUploadFile } from "react-icons/md";
+import { MdAdd } from "react-icons/md";
 import ExamTable from "../../../components/admin/tables/ExamTable";
-import IconComponent from "../../../components/shared/Icon.component";
 import PageSectionHeader from "../../../components/shared/PageSectionHeader";
 import PageWrapper from "../../../components/shared/PageWrapper";
 
@@ -16,48 +15,22 @@ export default function ExamsPage() {
         justifyContent={"space-between"}
         alignItems={"center"}
         mt={8}
-        mb={6}
+        mb={4}
       >
         <SearchWidget
           text={"Search Class / Subject Examination"}
-          asButton={true}
-          height={"40px"}
+          height={"36px"}
         />
 
         <Flex gap={4} fontSize={"sm"}>
           <Button
-            size={"sm"}
-            bg={"neutral.100"}
-            border={"1px"}
-            borderColor={"brand.700"}
-          >
-            <IconComponent>
-              <MdIcecream />
-            </IconComponent>{" "}
-            Download
-          </Button>
-          <Button
-            display={"flex"}
-            gap={2}
-            size={"sm"}
-            bg={"accent.700"}
-            color={"white"}
-          >
-            <IconComponent>
-              <MdUploadFile />
-            </IconComponent>{" "}
-            Bulk Edit
-          </Button>
-          <Button
-            bg={"brand.700"}
+            colorScheme="blue"
             size={"sm"}
             color={"neutral.100"}
+            leftIcon={<MdAdd />}
             // onClick={() => openPortal(<CreateStaffPortal />)}
           >
-            <IconComponent>
-              <MdAdd />
-            </IconComponent>
-            Set Exam Questions
+            Set Questions
           </Button>
         </Flex>
       </Flex>
