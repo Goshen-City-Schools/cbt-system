@@ -1,6 +1,7 @@
 /* eslint-disable react/prop-types */
 
 import { useRef } from "react";
+import { useToast } from "@chakra-ui/react";
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { useParams } from "react-router-dom";
@@ -57,6 +58,7 @@ export default function WritePage({
 }) {
   const { questionIndex } = useParams();
   const navigate = useNavigate();
+  const toast = useToast();
 
   const currentIndex = parseInt(questionIndex, 10) || 0;
   const [currentQuestionIndex, setCurrentQuestionIndex] =
@@ -183,6 +185,13 @@ export default function WritePage({
     // Debugging: Inspect updatedQuestions before and after setting state.
     setCTQ(totalAllottedMarks);
     setQuestions(updatedQuestions);
+    toast({
+      title: `Question ${currentIndex + 1} Saved!`,
+      duration: "2500",
+      status: "success",
+      isClosable: true,
+      position: "top-right",
+    });
 
     // Debugging: Confirm that the state has been updated.
 
@@ -217,13 +226,26 @@ export default function WritePage({
           updatedQuestions.splice(deleteIndex, 1);
           setQuestions(updatedQuestions);
           saveExamQuestions(subjectExamId, updatedQuestions);
-
+          toast({
+            title: `Question ${deleteIndex} Deleted!`,
+            duration: "2000",
+            status: "warning",
+            isClosable: true,
+            position: "top-right",
+          });
           // Navigate to the previous question or to the list of questions if the current question was the first one.
           const targetIndex = deleteIndex > 0 ? deleteIndex - 1 : 0;
           navigate(`/admin/exams/${subjectExamId}/${targetIndex}`);
         } else if (deleteIndex > 0) {
           // If the current question doesn't exist, go to the previous question.
           const targetIndex = deleteIndex - 1;
+          toast({
+            title: `Question ${deleteIndex + 1} Deleted!`,
+            duration: "2000",
+            status: "warning",
+            isClosable: true,
+            position: "top-right",
+          });
           navigate(`/admin/exams/${subjectExamId}/${targetIndex}`);
         }
       }

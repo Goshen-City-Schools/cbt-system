@@ -8,13 +8,28 @@ export default function DisplaySubjectsOptions({
   value,
   size,
   onChange,
+  height,
+  width,
+  maxH,
+  maxW,
+  fontSize,
 }) {
   const sortedSubjects = schoolDataOptions.subjects.sort((a, b) =>
     a.name.localeCompare(b.name)
   );
   return (
-    <Select name={name} value={value} size={size} onChange={onChange}>
-      <option>-- -- --</option>
+    <Select
+      name={name}
+      height={height}
+      width={width}
+      maxH={maxH}
+      maxW={maxW}
+      value={value}
+      size={size}
+      onChange={onChange}
+      fontSize={!fontSize && "sm"}
+    >
+      <option>-- Choose Subject --</option>
       {sortedSubjects.map((subject, index) => (
         <option key={index} value={subject.name}>
           {subject.name}

@@ -5,11 +5,15 @@ function useExamsData() {
 
   useEffect(() => {
     // Retrieve the examsData from localStorage
-    const storedData = JSON.parse(localStorage.getItem("examsData"));
+    const storedData = localStorage.getItem("examsData");
 
     // Check if there is data in localStorage
-    if (storedData && Array.isArray(storedData)) {
-      setExamsData(storedData);
+    if (storedData) {
+      const parsedStoredData = JSON.parse(storedData);
+
+      if (Array.isArray(parsedStoredData)) {
+        setExamsData(parsedStoredData); // Set the state with the parsed array
+      }
     }
   }, []);
 

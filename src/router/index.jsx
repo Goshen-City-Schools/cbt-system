@@ -22,12 +22,14 @@ import HomePage from "../pages/admin/Home";
 import AdminNotFound from "../pages/AdminNotFound";
 import ExamsPage from "../pages/admin/Exams";
 import AssessmentsPage from "../pages/admin/Assessments";
-// import SetNewExamPage from "../pages/admin/Exams/New";
 import SetNewTestPage from "../pages/admin/Assessments/New";
 import WritePage from "../screens/Write";
 import CreateExamQuestionsPage from "../pages/admin/Exams/Create";
 import ExamSetup from "../screens/ExamSetup";
 import ExamQuestionsUploadScreen from "../screens/ExamQuestionsUploadScreen";
+import TestSetup from "../screens/TestSetup";
+import TestsPage from "../pages/admin/Tests";
+import TestQuestionsUploadScreen from "../screens/TestQuestionsUploadScreen";
 
 // Admin Pages
 
@@ -51,6 +53,7 @@ const router = createBrowserRouter(
       <Route element={<AdminLayout />}>
         <Route path="/admin">
           <Route index element={<HomePage />} />
+
           <Route path="exams">
             <Route index element={<ExamsPage />} />
             <Route path="new" element={<ExamSetup />} />
@@ -70,6 +73,15 @@ const router = createBrowserRouter(
               element={<WritePage type={"Exam"} subject={"Subject"} />}
             />
           </Route>
+
+          <Route path="tests">
+            <Route index element={<TestsPage />} />
+            <Route path="new" element={<TestSetup />} />
+            <Route path=":subjectTestId">
+              <Route path="upload" element={<TestQuestionsUploadScreen />} />
+            </Route>
+          </Route>
+
           <Route path="assessments">
             <Route index element={<AssessmentsPage />} />
             <Route path="new" element={<SetNewTestPage />} />

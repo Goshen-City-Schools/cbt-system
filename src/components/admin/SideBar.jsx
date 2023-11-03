@@ -100,8 +100,8 @@ export default function AdminSideBar() {
           </NavItemComponent>
           <NavItemComponent
             submenu={[
-              { name: "Set Questions", link: "/admin/exams/new" },
-              { name: "View Questions", link: "/admin/exams" },
+              { name: "Set Questions", link: "/admin/tests/new" },
+              { name: "View Questions", link: "/admin/tests" },
             ]}
           >
             <IconComponent>

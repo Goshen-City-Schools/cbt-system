@@ -8,12 +8,27 @@ export default function DisplaySchoolClassesOptions({
   value,
   size,
   onChange,
+  height,
+  width,
+  maxH,
+  maxW,
+  fontSize,
 }) {
   const classes = schoolDataOptions.classes;
 
   return (
-    <Select name={name} value={value} size={size} onChange={onChange}>
-      <option>-- -- --</option>
+    <Select
+      name={name}
+      height={height}
+      width={width}
+      maxH={maxH}
+      maxW={maxW}
+      value={value}
+      size={size}
+      onChange={onChange}
+      fontSize={!fontSize && "sm"}
+    >
+      <option>-- Select a Class --</option>
       {classes.map((schoolClass, index) => (
         <option key={index} value={schoolClass}>
           {schoolClass}

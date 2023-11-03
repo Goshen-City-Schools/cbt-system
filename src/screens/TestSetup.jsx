@@ -18,8 +18,9 @@ import { MdKeyboard, MdUpload } from "react-icons/md";
 import DisplaySubjectsOptions from "../utilities/DisplaySubjectsOptions";
 import DisplaySchoolClassesOptions from "../utilities/DisplaySchoolClassesOptions";
 
-function ExamSetup() {
+function TestSetup() {
   const navigate = useNavigate();
+
   const [formData, setFormData] = useState({
     id: "",
     subject: "",
@@ -27,16 +28,16 @@ function ExamSetup() {
     date: "",
     time: "",
     duration: "",
-    examMarks: "",
+    testMarks: "",
   });
 
   useEffect(() => {
     // Check if exasmData is already in localStorage
-    if (!localStorage.getItem("examsData")) {
-      localStorage.setItem("examsData", JSON.stringify([]));
+    if (!localStorage.getItem("testsData")) {
+      localStorage.setItem("testsData", JSON.stringify([]));
     } else {
       // Load the data from localStorage and set it in the form
-      const storedData = JSON.parse(localStorage.getItem("examsData"));
+      const storedData = JSON.parse(localStorage.getItem("testsData"));
       if (storedData) {
         setFormData(storedData);
       }
@@ -59,35 +60,37 @@ function ExamSetup() {
       !formData.class ||
       !formData.date ||
       !formData.time ||
+      !formData.type ||
       !formData.duration ||
-      !formData.examMarks
+      !formData.testMarks
     ) {
+      console.log(formData);
+
       alert("Please fill in all required fields before submitting.");
     } else {
-      const examsData = {
+      const testsData = {
         id: generateId(),
         subject: formData.subject,
-        session: formData.session,
-        term: formData.term,
         class: formData.class,
+        type: formData.type,
         date: formData.date,
         time: formData.time,
         duration: formData.duration,
-        examMarks: formData.examMarks,
+        testMarks: formData.testMarks,
       };
 
       // Retrieve the existing exam data from localStorage (if any)
-      const existingExamsData =
-        JSON.parse(localStorage.getItem("examsData")) || [];
+      const existingTestsData =
+        JSON.parse(localStorage.getItem("testsData")) || [];
 
       // Add the new exam data to the array
-      const newExamsData = [...existingExamsData, examsData];
+      const newTestsData = [...existingTestsData, testsData];
 
       // Store the updated array in localStorage
-      localStorage.setItem("examsData", JSON.stringify(newExamsData));
+      localStorage.setItem("testsData", JSON.stringify(newTestsData));
 
       // Redirect to the upload page
-      navigate(`/admin/exams/${examsData.id}/upload`);
+      navigate(`/admin/tests/${testsData.id}/upload`);
     }
   };
 
@@ -98,43 +101,44 @@ function ExamSetup() {
       !formData.class ||
       !formData.date ||
       !formData.time ||
+      !formData.type ||
       !formData.duration ||
-      !formData.examMarks
+      !formData.testMarks
     ) {
       alert("Please fill in all required fields before submitting.");
+      console.log(formData);
     } else {
-      const examsData = {
+      const testsData = {
         id: generateId(),
         subject: formData.subject,
-        session: formData.session,
-        term: formData.term,
         class: formData.class,
         date: formData.date,
         time: formData.time,
+        type: formData.type,
         duration: formData.duration,
-        examMarks: formData.examMarks,
+        testMarks: formData.testMarks,
       };
 
       // Retrieve the existing exam data from localStorage (if any)
-      const existingExamsData =
-        JSON.parse(localStorage.getItem("examsData")) || [];
+      const existingTestsData =
+        JSON.parse(localStorage.getItem("testsData")) || [];
 
       // Add the new exam data to the array
-      const newExamsData = [...existingExamsData, examsData];
+      const newTestsData = [...existingTestsData, testsData];
 
       // Store the updated array in localStorage
-      localStorage.setItem("examsData", JSON.stringify(newExamsData));
+      localStorage.setItem("testsData", JSON.stringify(newTestsData));
 
       // Redirect to the page for typing questions
-      navigate(`/admin/exams/${examsData.id}`);
+      navigate(`/admin/tests/${testsData.id}`);
     }
   };
 
   return (
     <PageWrapper>
       <PageSectionHeader
-        pageTitle={"New Exam Setup"}
-        pageCrumb={"Home / Exams / New"}
+        pageTitle={"New Test Setup"}
+        pageCrumb={"Home / Tests / New"}
       />
       <Box w={"full"} mt={8} maxW={"2xl"} shadow={"sm"} mx={"auto"}>
         <form
@@ -185,14 +189,25 @@ function ExamSetup() {
               selectedTime={formData.time}
               onChange={handleChange}
             />
+          </FormControl>
 
-            {/* <Input
-              type="time"
-              name="time"
+          <FormControl id="type">
+            <FormLabel fontWeight={"bold"} fontSize={"sm"}>
+              Test Type
+            </FormLabel>
+            <Select
               size={"sm"}
-              value={formData.time}
+              name="type"
+              value={formData.type}
               onChange={handleChange}
-            /> */}
+            >
+              <option value="">__ Selest Test Type__</option>
+
+              <option value="test1">Test I</option>
+              <option value="test2">Test II</option>
+              <option value="test3">Test III</option>
+              {/* Add more options as needed */}
+            </Select>
           </FormControl>
 
           <FormControl id="duration">
@@ -214,15 +229,15 @@ function ExamSetup() {
             </Select>
           </FormControl>
 
-          <FormControl id="date">
+          <FormControl>
             <FormLabel fontWeight={"bold"} fontSize={"sm"}>
-              Exam Marks
+              Test Marks
             </FormLabel>
             <Input
               type="number"
-              name="examMarks"
-              defaultValue={60}
-              value={formData.examMarks}
+              name="testMarks"
+              defaultValue={40}
+              value={formData.testMarks}
               onChange={handleChange}
             />
           </FormControl>
@@ -259,4 +274,4 @@ function ExamSetup() {
   );
 }
 
-export default ExamSetup;
+export default TestSetup;

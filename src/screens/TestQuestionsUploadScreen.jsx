@@ -8,10 +8,8 @@ import { Flex, Box, Text, Input } from "@chakra-ui/react";
 import PageWrapper from "../components/shared/PageWrapper";
 import PageSectionHeader from "../components/shared/PageSectionHeader";
 import { useNavigate } from "react-router-dom";
-import { useToast } from "@chakra-ui/react";
 
-const ExamQuestionsUploadScreen = () => {
-  const toast = useToast();
+const TestQuestionsUploadScreen = () => {
   const { subjectExamId } = useParams();
   const { excelData, handleFileChange } = useExcelReader();
 
@@ -105,12 +103,7 @@ const ExamQuestionsUploadScreen = () => {
 
     navigate(`/admin/exams/${subjectExamId}/${subjectExamQuestions.length}`);
 
-    toast({
-      title: `${examDetails.class} ${examDetails.subject} Questions Uploaded!`,
-      duration: "2500",
-      status: "success",
-      isClosable: true,
-    });
+    alert("Questions uploaded successfully!");
   };
 
   const handleDeleteQuestions = () => {
@@ -171,16 +164,14 @@ const ExamQuestionsUploadScreen = () => {
                   EXAM Details
                 </Text>
                 <Flex direction={"column"} textTransform={"uppercase"} gap={2}>
-                  {Object.keys(examDetails)
-                    .slice(1)
-                    .map((key) => (
-                      <Flex justifyContent={"space-between"} key={key}>
-                        <Text as={"small"}>{key}:</Text>
-                        <Text as={"small"} fontWeight={"bold"}>
-                          {examDetails[key]}
-                        </Text>
-                      </Flex>
-                    ))}
+                  {Object.keys(examDetails).map((key) => (
+                    <Flex justifyContent={"space-between"} key={key}>
+                      <Text as={"small"}>{key}:</Text>
+                      <Text as={"small"} fontWeight={"bold"}>
+                        {examDetails[key]}
+                      </Text>
+                    </Flex>
+                  ))}
 
                   {subjectExamQuestions.length > 0 && (
                     <>
@@ -215,4 +206,4 @@ const ExamQuestionsUploadScreen = () => {
   );
 };
 
-export default ExamQuestionsUploadScreen;
+export default TestQuestionsUploadScreen;
