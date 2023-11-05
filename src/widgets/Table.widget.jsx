@@ -11,11 +11,12 @@ import {
   Box,
   useStyleConfig,
   useMediaQuery,
+  Button,
 } from "@chakra-ui/react";
 import ReusableBadge from "../components/shared/ReusableBadge";
 // import ReusableBadge from "../components/ReusableBadge";
 
-const DataTable = ({ columns, data, fullWidthColumns }) => {
+const DataTable = ({ columns, data, fullWidthColumns, customPageSize }) => {
   const [isMobile] = useMediaQuery("(max-width: 768px)"); // Detect mobile view
 
   const {
@@ -33,7 +34,10 @@ const DataTable = ({ columns, data, fullWidthColumns }) => {
     {
       columns,
       data,
-      initialState: { pageIndex: 0, pageSize: 10 },
+      initialState: {
+        pageIndex: 0,
+        pageSize: customPageSize ? customPageSize : 10,
+      },
     },
     useSortBy,
     usePagination
@@ -128,19 +132,29 @@ const DataTable = ({ columns, data, fullWidthColumns }) => {
         mt={4}
         mx={"auto"}
         width={"max-content"}
+        alignItems={"center"}
       >
-        <button onClick={() => previousPage()} disabled={!canPreviousPage}>
+        <Button
+          size={"sm"}
+          onClick={() => previousPage()}
+          disabled={!canPreviousPage}
+        >
           Previous
-        </button>
+        </Button>
         <span>
           Page{" "}
           <strong>
             {pageIndex + 1} of {Math.ceil(data.length / pageSize)}
           </strong>{" "}
         </span>
-        <button onClick={() => nextPage()} disabled={!canNextPage}>
+        <Button
+          colorScheme="blue"
+          onClick={() => nextPage()}
+          size={"sm"}
+          disabled={!canNextPage}
+        >
           Next
-        </button>
+        </Button>
       </Flex>
     </Box>
   );

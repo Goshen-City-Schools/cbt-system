@@ -1,7 +1,6 @@
 /* eslint-disable react/prop-types */
 import { Box, Flex, Text, Grid } from "@chakra-ui/react";
 import loadExamQuestions from "../utilities/loadExamQuestions";
-import "katex/dist/katex.min.css";
 import Latex from "react-latex-next";
 
 function QuestionBox({ subject, question, options, index }) {

@@ -1,18 +1,31 @@
 /* eslint-disable react/prop-types */
+// Libraries
 import { useEffect, useState } from "react";
-
 import dayjs from "dayjs";
-import DataTable from "../../../widgets/Table.widget";
-import { Box, Button, Flex, Text, useToast } from "@chakra-ui/react";
-import useExamsData from "../../../hooks/useExamsData";
+
+// Hooks
 import { useNavigate } from "react-router-dom";
-import loadExamQuestions from "../../../utilities/loadExamQuestions";
-import { PiGraduationCapLight } from "react-icons/pi";
+import useExamsData from "../../../hooks/useExamsData";
+
+// Components
+import IconComponent from "../../shared/Icon.component";
+
+// Utilities
 import DisplaySubjectsOptions from "../../../utilities/DisplaySubjectsOptions";
 import DisplaySchoolClassesOptions from "../../../utilities/DisplaySchoolClassesOptions";
-import IconComponent from "../../shared/Icon.component";
+import loadExamQuestions from "../../../utilities/loadExamQuestions";
+
+// Widgets
+import DataTable from "../../../widgets/Table.widget";
+
+// Icons
 import { MdDeleteOutline, MdModeEditOutline } from "react-icons/md";
 import { FaRegEye } from "react-icons/fa";
+import { PiGraduationCapLight } from "react-icons/pi";
+
+// Chakra Compoennts
+import { Box, Button, Flex, Text, useToast, Tooltip } from "@chakra-ui/react";
+import CustomCard from "../../shared/CustomTooltip";
 
 function ExamTable() {
   const storedExamsData = useExamsData();
@@ -98,21 +111,35 @@ function ExamTable() {
       accessor: "action", // Replace with the actual data key for action
       Cell: ({ row }) => (
         <Flex gap={2}>
-          <IconComponent
-            click={() => handleDeleteAction(row.original.id)}
-            className="text-red-600 cursor-pointer hover:scale-110 transition duration-300"
-          >
-            <MdDeleteOutline size={20} />
-          </IconComponent>
-          <IconComponent className="text-blue-700 cursor-pointer hover:scale-110 transition duration-300">
-            <FaRegEye size={16} />
-          </IconComponent>
-          <IconComponent
-            className="text-green-700 cursor-pointer hover:scale-110 transition duration-300"
-            click={() => handleEditAction(row.original.id)}
-          >
-            <MdModeEditOutline size={17} />
-          </IconComponent>
+          <Tooltip label={"Delete"} aria-label="hi">
+            <CustomCard>
+              <IconComponent
+                click={() => handleDeleteAction(row.original.id)}
+                className="text-red-600 cursor-pointer hover:scale-110 transition duration-300"
+              >
+                <MdDeleteOutline size={20} />
+              </IconComponent>
+            </CustomCard>
+          </Tooltip>
+
+          <Tooltip label={"Preview"} aria-label="hi">
+            <CustomCard>
+              <IconComponent className="text-blue-700 cursor-pointer hover:scale-110 transition duration-300">
+                <FaRegEye size={16} />
+              </IconComponent>
+            </CustomCard>
+          </Tooltip>
+
+          <Tooltip label={"Delete"} aria-label="hi">
+            <CustomCard>
+              <IconComponent
+                className="text-green-700 cursor-pointer hover:scale-110 transition duration-300"
+                click={() => handleEditAction(row.original.id)}
+              >
+                <MdModeEditOutline size={17} />
+              </IconComponent>
+            </CustomCard>
+          </Tooltip>
         </Flex>
       ),
     },
