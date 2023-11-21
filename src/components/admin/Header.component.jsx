@@ -79,14 +79,6 @@ export default function AdminHeader() {
             <PopoverCloseButton />
 
             <PopoverBody>
-              {/* <Button
-                variant="ghost"
-                w="100%"
-                justifyContent="flex-start"
-                onClick={() => navigate("/admin/profile")}
-              >
-                My Profile
-              </Button> */}
               <Button
                 variant="ghost"
                 w="100%"

@@ -125,7 +125,7 @@ const TestQuestionsUploadScreen = () => {
           <Input
             type="file"
             className={"mt-10"}
-            accept=".xls"
+            accept=".xls, .xlsx"
             onChange={handleFileUpload}
           />
         )}

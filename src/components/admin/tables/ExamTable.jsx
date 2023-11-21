@@ -155,7 +155,11 @@ function ExamTable() {
               <Text as="p" fontSize="sm" fontWeight="bold" color="accent.700">
                 Filter:{" "}
               </Text>
-              <DisplaySubjectsOptions height="32px" maxW="sm" />
+              <DisplaySubjectsOptions
+                value={"Agriculture"}
+                height="32px"
+                maxW="sm"
+              />
               <DisplaySchoolClassesOptions height="32px" maxW="sm" />
             </Flex>{" "}
           </>
